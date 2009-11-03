@@ -289,12 +289,15 @@ public abstract class TextUtilities {
 		if (text == null || text.equals("")) {
 			return;
 		}
+		
 		Matrix old = g2.getMatrix();
 		Matrix matrix = new Matrix();
 		// rotate the Bitmap
-		matrix.postRotate((float) angle);
+		//matrix.postRotate((float) angle);
+		matrix.setRotate((float)angle, x, y);
 		g2.setMatrix(matrix);
 		g2.drawText(text, x, y, paint);
+		matrix.setRotate(0);
 		g2.setMatrix(old);
 
 	}

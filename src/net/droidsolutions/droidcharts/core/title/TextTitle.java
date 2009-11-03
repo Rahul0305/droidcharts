@@ -247,6 +247,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		this.content = null;
 		this.toolTipText = null;
 		this.urlText = null;
+		
+		this.paint.setTypeface(this.font.getTypeFace());
+		this.paint.setTextSize(this.font.getSize());
 
 	}
 
@@ -554,7 +557,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		RectangleEdge position = getPosition();
 		if (position == RectangleEdge.TOP || position == RectangleEdge.BOTTOM) {
 			float maxWidth = (float) w;
-			// g2.setFont(this.font);
+			
+			 paint.setTypeface(font.getTypeFace());
+			 paint.setTextSize(font.getSize());
 			this.content = TextUtilities.createTextBlock(this.text, this.font,
 					this.paint, maxWidth, this.maximumLinesToDisplay,
 					new G2TextMeasurer(paint));
@@ -629,6 +634,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		if (position == RectangleEdge.TOP || position == RectangleEdge.BOTTOM) {
 			float maxWidth = (float) widthRange.getUpperBound();
 			// g2.setFont(this.font);
+
+			 paint.setTypeface(font.getTypeFace());
+			 paint.setTextSize(font.getSize());
 			this.content = TextUtilities.createTextBlock(this.text, this.font,
 					this.paint, maxWidth, this.maximumLinesToDisplay,
 					new G2TextMeasurer(paint));
@@ -707,6 +715,7 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		}
 		area = trimBorder(area);
 		if (this.backgroundPaint != null) {
+			
 			// g2.setPaint(this.backgroundPaint);
 			// g2.fill(area);
 		}

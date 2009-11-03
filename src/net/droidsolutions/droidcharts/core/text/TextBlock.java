@@ -325,7 +325,7 @@ public class TextBlock implements Serializable {
 				|| anchor == TextBlockAnchor.TOP_CENTER
 				|| anchor == TextBlockAnchor.TOP_RIGHT) {
 
-			yAdj = 0.0f;
+			yAdj = 5.0f;
 
 		} else if (anchor == TextBlockAnchor.CENTER_LEFT
 				|| anchor == TextBlockAnchor.CENTER

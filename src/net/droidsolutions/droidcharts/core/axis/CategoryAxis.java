@@ -204,7 +204,7 @@ public class CategoryAxis extends Axis implements Cloneable, Serializable {
 		this.maximumCategoryLabelWidthRatio = 0.0f;
 
 		this.categoryLabelPositionOffset = 4;
-		this.categoryLabelPositions = CategoryLabelPositions.STANDARD;
+		this.categoryLabelPositions = CategoryLabelPositions.UP_45;
 		this.tickLabelFontMap = new HashMap();
 		this.tickLabelPaintMap = new HashMap();
 		this.categoryLabelToolTips = new HashMap();
@@ -1035,10 +1035,11 @@ public class CategoryAxis extends Axis implements Cloneable, Serializable {
 			while (iterator.hasNext()) {
 
 				CategoryTick tick = (CategoryTick) iterator.next();
-				// g2.setFont(getTickLabelFont(tick.getCategory()));
+				Font tickLabelFont = getTickLabelFont(tick.getCategory());
 
 				Paint paint = getTickLabelPaint(tick.getCategory());
-
+				paint.setTypeface(tickLabelFont.getTypeFace());
+				paint.setTextSize(tickLabelFont.getSize());
 				CategoryLabelPosition position = this.categoryLabelPositions
 						.getLabelPosition(edge);
 				double x0 = 0.0;
