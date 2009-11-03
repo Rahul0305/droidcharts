@@ -4,6 +4,7 @@ import net.droidsolutions.droidcharts.awt.Rectangle2D;
 import net.droidsolutions.droidcharts.awt.RectangularShape;
 import net.droidsolutions.droidcharts.common.RectangleEdge;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 
 public class AndroidStyleBarRenderer extends GradientBarPainter {
@@ -28,13 +29,14 @@ public class AndroidStyleBarRenderer extends GradientBarPainter {
 			RectangularShape bar, RectangleEdge base) {
 
 		Paint itemPaint = renderer.getItemPaint(row, column);
-
+		
 		if (base == RectangleEdge.TOP || base == RectangleEdge.BOTTOM) {
 			Rectangle2D[] regions = splitVerticalBar(bar, this.g1, this.g2,
 					this.g3);
 
 			itemPaint.setStyle(Paint.Style.FILL);
 			// itemPaint.setStrokeWidth(3);
+			
 
 			g2.drawRect((int) regions[0].getMinX(), (int) regions[0].getMinY(),
 					(int) regions[0].getMaxX(), (int) regions[0].getMaxY(),
@@ -48,6 +50,7 @@ public class AndroidStyleBarRenderer extends GradientBarPainter {
 			g2.drawRect((int) regions[3].getMinX(), (int) regions[3].getMinY(),
 					(int) regions[3].getMaxX(), (int) regions[3].getMaxY(),
 					itemPaint);
+			
 
 		} else if (base == RectangleEdge.LEFT || base == RectangleEdge.RIGHT) {
 			Rectangle2D[] regions = splitHorizontalBar(bar, this.g1, this.g2,
@@ -67,6 +70,7 @@ public class AndroidStyleBarRenderer extends GradientBarPainter {
 			g2.drawRect((int) regions[3].getMinX(), (int) regions[3].getMinY(),
 					(int) regions[3].getMaxX(), (int) regions[3].getMaxY(),
 					itemPaint);
+		
 
 		}
 

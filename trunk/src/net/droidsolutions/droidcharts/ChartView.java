@@ -54,8 +54,6 @@ public class ChartView extends View {
 				.height()));
 		Paint p = new Paint();
 		p.setColor(Color.RED);
-//anvas.drawText("XUI", 10, 10,p );
-		 //Chart.draw(canvas, left, top, width, height);
 	}
 
 	/**
@@ -166,6 +164,7 @@ public class ChartView extends View {
 		// set the range axis to display integers only...
 		final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 		rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+		rangeAxis.setLabelAngle(90);
 
 		// disable bar outlines...
 		final BarRenderer renderer = (BarRenderer) plot.getRenderer();

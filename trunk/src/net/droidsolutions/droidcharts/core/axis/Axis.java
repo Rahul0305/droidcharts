@@ -143,7 +143,7 @@ public abstract class Axis implements Cloneable, Serializable {
 		DEFAULT_AXIS_LINE_PAINT.setColor(Color.DKGRAY);
 	}
 	/** The default axis line stroke. */
-	public static final int DEFAULT_AXIS_LINE_STROKE = 2;
+	public static final int DEFAULT_AXIS_LINE_STROKE = 3;
 
 	/** The default tick labels visibility. */
 	public static final boolean DEFAULT_TICK_LABELS_VISIBLE = true;
@@ -160,7 +160,7 @@ public abstract class Axis implements Cloneable, Serializable {
 	}
 	/** The default tick label insets. */
 	public static final RectangleInsets DEFAULT_TICK_LABEL_INSETS = new RectangleInsets(
-			2.0, 4.0, 2.0, 4.0);
+			2.0, 2.0, 2.0, 2.0);
 
 	/** The default tick marks visible. */
 	public static final boolean DEFAULT_TICK_MARKS_VISIBLE = true;
@@ -1130,7 +1130,7 @@ public abstract class Axis implements Cloneable, Serializable {
 			double x = bounds.getCenterX();
 			double y = bounds.getCenterY();
 			AffineTransform transformer = AffineTransform.getRotateInstance(
-					angle, x, y);
+					Math.toRadians(angle), x, y);
 			Shape labelBounds = transformer.createTransformedShape(bounds);
 			result = labelBounds.getBounds2D();
 			// result = bounds;
@@ -1173,8 +1173,8 @@ public abstract class Axis implements Cloneable, Serializable {
 
 		Font font = getLabelFont();
 		RectangleInsets insets = getLabelInsets();
-		// g2.setFont(font);
-		// g2.setPaint(getLabelPaint());
+		getLabelPaint().setTypeface(font.getTypeFace());
+		getLabelPaint().setTextSize(font.getSize());
 
 		Rectangle2D labelBounds = TextUtilities.getTextBounds(label,
 				getLabelPaint());
@@ -1213,6 +1213,7 @@ public abstract class Axis implements Cloneable, Serializable {
 					labelBounds.getCenterY());
 			Shape rotatedLabelBounds = t.createTransformedShape(labelBounds);
 			labelBounds = rotatedLabelBounds.getBounds2D();
+			
 			double labelx = state.getCursor() - insets.getRight()
 					- labelBounds.getWidth() / 2.0;
 			double labely = dataArea.getCenterY();
