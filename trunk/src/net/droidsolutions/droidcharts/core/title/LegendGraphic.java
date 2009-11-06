@@ -50,6 +50,7 @@
 
 package net.droidsolutions.droidcharts.core.title;
 
+import net.droidsolutions.droidcharts.awt.Ellipse2D;
 import net.droidsolutions.droidcharts.awt.Line2D;
 import net.droidsolutions.droidcharts.awt.Point2D;
 import net.droidsolutions.droidcharts.awt.Rectangle;
@@ -617,24 +618,49 @@ public class LegendGraphic extends AbstractBlock implements Block {
 			 * (float) rect.getMaxX(), (float) rect.getMaxY(), p); } }
 			 */
 
-			Rectangle2D rect = (Rectangle2D) shape;
-			if (this.shapeFilled) {
-				Paint p = this.fillPaint;
+			if (shape instanceof Rectangle2D) {
+				Rectangle2D rect = (Rectangle2D) shape;
+				if (this.shapeFilled) {
+					Paint p = this.fillPaint;
 
-				p.setStyle(Paint.Style.FILL);
-				g2.drawRect((float) location.getX(), (float) location.getY(),
-						(float) (location.getX() + rect.getWidth()),
-						(float) (location.getY() + rect.getHeight()), p);
-			}
-			if (this.shapeOutlineVisible) {
-				Paint p = this.outlinePaint;
+					p.setStyle(Paint.Style.FILL);
+					g2.drawRect((float) location.getX(), (float) location
+							.getY(),
+							(float) (location.getX() + rect.getWidth()),
+							(float) (location.getY() + rect.getHeight()), p);
+				}
+				if (this.shapeOutlineVisible) {
+					Paint p = this.outlinePaint;
 
-				p.setStyle(Paint.Style.STROKE);
-				p.setStrokeWidth(outlineStroke);
-				g2.drawRect((float) location.getX(), (float) location.getY(),
-						(float) (location.getX() + rect.getWidth()),
-						(float) (location.getY() + rect.getHeight()), p);
+					p.setStyle(Paint.Style.STROKE);
+					p.setStrokeWidth(outlineStroke);
+					g2.drawRect((float) location.getX(), (float) location
+							.getY(),
+							(float) (location.getX() + rect.getWidth()),
+							(float) (location.getY() + rect.getHeight()), p);
 
+				}
+			} else if (shape instanceof Ellipse2D) {
+				Ellipse2D ellips = (Ellipse2D) shape;
+				if (this.shapeFilled) {
+					Paint p = this.fillPaint;
+
+					p.setStyle(Paint.Style.FILL);
+					g2.drawCircle((float) location.getX(), (float) location
+							.getY(), 5, fillPaint);
+							
+					
+				}
+				if (this.shapeOutlineVisible) {
+					Paint p = this.outlinePaint;
+
+					p.setStyle(Paint.Style.STROKE);
+					p.setStrokeWidth(outlineStroke);
+					g2.drawCircle((float) location.getX(), (float) location
+							.getY(), 5, fillPaint);
+							
+
+				}
 			}
 		}
 

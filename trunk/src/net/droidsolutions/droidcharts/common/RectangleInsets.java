@@ -198,7 +198,7 @@ public class RectangleInsets {
 	 * 
 	 * @return The inset rectangle.
 	 */
-	public Rectangle2D createInsetRectangle(final Rectangle base) {
+	public Rectangle2D createInsetRectangle(final Rectangle2D base) {
 		return createInsetRectangle(base, true, true);
 	}
 
@@ -214,7 +214,7 @@ public class RectangleInsets {
 	 * 
 	 * @return The inset rectangle.
 	 */
-	public Rectangle2D createInsetRectangle(final Rectangle base,
+	public Rectangle2D createInsetRectangle(final Rectangle2D base,
 			final boolean horizontal, final boolean vertical) {
 		if (base == null) {
 			throw new IllegalArgumentException("Null 'base' argument.");

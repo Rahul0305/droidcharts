@@ -9,7 +9,9 @@ public class StartActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		ChartView mView = new ChartView(this);
+		//BarChartCategoryExampletView mView = new BarChartCategoryExampletView(this);
+		//BarChartExampleView mView = new BarChartExampleView(this);
+		PieChartExampleView mView = new PieChartExampleView(this);
 		String title = "My Chart";
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);

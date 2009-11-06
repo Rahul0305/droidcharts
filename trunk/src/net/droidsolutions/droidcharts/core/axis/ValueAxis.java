@@ -644,7 +644,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, Serializable 
 	 * @return The x and y coordinates of the anchor point.
 	 */
 	protected float[] calculateAnchorPoint(ValueTick tick, double cursor,
-			Rectangle2D dataArea, RectangleEdge edge) {
+			Rectangle2D dataArea, RectangleEdge edge, Paint paint) {
 
 		RectangleInsets insets = getTickLabelInsets();
 		float[] result = new float[2];
@@ -700,7 +700,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, Serializable 
 				Paint tickPaint = getTickLabelPaint();
 
 				float[] anchorPoint = calculateAnchorPoint(tick, cursor,
-						dataArea, edge);
+						dataArea, edge, tickPaint);
 				TextUtilities.drawRotatedString(tick.getText(), g2,
 						anchorPoint[0], anchorPoint[1], tick.getTextAnchor(),
 						tick.getAngle(), tick.getRotationAnchor(), tickPaint);

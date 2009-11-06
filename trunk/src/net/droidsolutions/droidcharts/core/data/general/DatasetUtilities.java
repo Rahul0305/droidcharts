@@ -127,9 +127,11 @@ import java.util.List;
 import net.droidsolutions.droidcharts.core.data.BoxAndWhiskerCategoryDataset;
 import net.droidsolutions.droidcharts.core.data.CategoryDataset;
 import net.droidsolutions.droidcharts.core.data.CategoryRangeInfo;
+import net.droidsolutions.droidcharts.core.data.DefaultCategoryDataset;
 import net.droidsolutions.droidcharts.core.data.IntervalCategoryDataset;
 import net.droidsolutions.droidcharts.core.data.IntervalXYDataset;
 import net.droidsolutions.droidcharts.core.data.OHLCDataset;
+import net.droidsolutions.droidcharts.core.data.PieDataset;
 import net.droidsolutions.droidcharts.core.data.Range;
 import net.droidsolutions.droidcharts.core.data.RangeInfo;
 import net.droidsolutions.droidcharts.core.data.StatisticalCategoryDataset;
@@ -526,5 +528,102 @@ public final class DatasetUtilities {
 			return new Range(minimum, maximum);
 		}
 	}
+	
+	 /**
+     * Creates a {@link CategoryDataset} that contains a copy of the data in an
+     * array (instances of <code>Double</code> are created to represent the
+     * data items).
+     * <p>
+     * Row and column keys are created by appending 0, 1, 2, ... to the
+     * supplied prefixes.
+     *
+     * @param rowKeyPrefix  the row key prefix.
+     * @param columnKeyPrefix  the column key prefix.
+     * @param data  the data.
+     *
+     * @return The dataset.
+     */
+    public static CategoryDataset createCategoryDataset(String rowKeyPrefix,
+            String columnKeyPrefix, double[][] data) {
+
+        DefaultCategoryDataset result = new DefaultCategoryDataset();
+        for (int r = 0; r < data.length; r++) {
+            String rowKey = rowKeyPrefix + (r + 1);
+            for (int c = 0; c < data[r].length; c++) {
+                String columnKey = columnKeyPrefix + (c + 1);
+                result.addValue(new Double(data[r][c]), rowKey, columnKey);
+            }
+        }
+        return result;
+
+    }
+    
+    /**
+     * Calculates the total of all the values in a {@link PieDataset}.  If
+     * the dataset contains negative or <code>null</code> values, they are
+     * ignored.
+     *
+     * @param dataset  the dataset (<code>null</code> not permitted).
+     *
+     * @return The total.
+     */
+    public static double calculatePieDatasetTotal(PieDataset dataset) {
+        if (dataset == null) {
+            throw new IllegalArgumentException("Null 'dataset' argument.");
+        }
+        List keys = dataset.getKeys();
+        double totalValue = 0;
+        Iterator iterator = keys.iterator();
+        while (iterator.hasNext()) {
+            Comparable current = (Comparable) iterator.next();
+            if (current != null) {
+                Number value = dataset.getValue(current);
+                double v = 0.0;
+                if (value != null) {
+                    v = value.doubleValue();
+                }
+                if (v > 0) {
+                    totalValue = totalValue + v;
+                }
+            }
+        }
+        return totalValue;
+    }
+
+    /**
+     * Returns <code>true</code> if the dataset is empty (or <code>null</code>),
+     * and <code>false</code> otherwise.
+     *
+     * @param dataset  the dataset (<code>null</code> permitted).
+     *
+     * @return A boolean.
+     */
+    public static boolean isEmptyOrNull(PieDataset dataset) {
+
+        if (dataset == null) {
+            return true;
+        }
+
+        int itemCount = dataset.getItemCount();
+        if (itemCount == 0) {
+            return true;
+        }
+
+        for (int item = 0; item < itemCount; item++) {
+            Number y = dataset.getValue(item);
+            if (y != null) {
+                double yy = y.doubleValue();
+                if (yy > 0.0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+    }
+
+
+
 
 }

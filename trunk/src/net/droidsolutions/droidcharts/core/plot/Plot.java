@@ -185,10 +185,10 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	}
 
 	/** The default foreground alpha transparency. */
-	public static final float DEFAULT_FOREGROUND_ALPHA = 1.0f;
+	public static final int DEFAULT_FOREGROUND_ALPHA = 200;
 
 	/** The default background alpha transparency. */
-	public static final float DEFAULT_BACKGROUND_ALPHA = 1.0f;
+	public static final int DEFAULT_BACKGROUND_ALPHA = 200;
 
 	/** The default background color. */
 	public static final Paint DEFAULT_BACKGROUND_PAINT = new Paint(
@@ -251,10 +251,10 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	private float backgroundImageAlpha = 0.5f;
 
 	/** The alpha-transparency for the plot. */
-	private float foregroundAlpha;
+	private int foregroundAlpha;
 
 	/** The alpha transparency for the background paint. */
-	private float backgroundAlpha;
+	private int backgroundAlpha;
 
 	/** The drawing supplier. */
 	private DrawingSupplier drawingSupplier;
@@ -573,7 +573,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	 * 
 	 * @see #getBackgroundAlpha()
 	 */
-	public void setBackgroundAlpha(float alpha) {
+	public void setBackgroundAlpha(int alpha) {
 		if (this.backgroundAlpha != alpha) {
 			this.backgroundAlpha = alpha;
 		}
@@ -736,7 +736,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	 * 
 	 * @see #setForegroundAlpha(float)
 	 */
-	public float getForegroundAlpha() {
+	public int getForegroundAlpha() {
 		return this.foregroundAlpha;
 	}
 
@@ -749,7 +749,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	 * 
 	 * @see #getForegroundAlpha()
 	 */
-	public void setForegroundAlpha(float alpha) {
+	public void setForegroundAlpha(int alpha) {
 		if (this.foregroundAlpha != alpha) {
 			this.foregroundAlpha = alpha;
 		}
@@ -935,6 +935,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 					0.9f * (float) area.getWidth(), new G2TextMeasurer(
 							noDataMessagePaint));
 
+			//noDataMessagePaint.setAlpha(alpha);
 			block.draw(g2, (float) area.getCenterX(),
 					(float) area.getCenterY(), TextBlockAnchor.CENTER,
 					noDataMessagePaint);
