@@ -89,10 +89,17 @@ public abstract class RefineryUtilities {
 	 *            the rotation angle.
 	 */
 	public static void drawRotatedString(final String text, final Canvas g2,
-			final float x, final float y, final Paint paint) {
+			final float x, final float y, final Paint paint, float angle) {
 
-		g2.drawText(text, x, y, paint);
-
+		//g2.drawCircle(x, y, 2, paint);
+		g2.save();
+		if (angle == 0.0)
+			g2.drawText(text, x, y, paint);
+		else {
+			g2.rotate((float) Math.toDegrees(angle), x, y);
+			g2.drawText(text, x, y, paint);
+		}
+		g2.restore();
 	}
 
 }

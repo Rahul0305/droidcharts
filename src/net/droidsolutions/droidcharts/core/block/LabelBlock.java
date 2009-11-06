@@ -369,8 +369,9 @@ public class LabelBlock extends AbstractBlock implements Block {
 				entityArea = (Shape) area.clone();
 			}
 		}
-		// g2.setPaint(this.paint);
-		// g2.setFont(this.font);
+		
+		paint.setTypeface(font.getTypeFace());
+		paint.setTextSize(font.getSize());
 		Point2D pt = RectangleAnchor.coordinates(area, this.textAnchor);
 		this.label.draw(g2, (float) pt.getX(), (float) pt.getY(),
 				this.contentAlignmentPoint, paint);

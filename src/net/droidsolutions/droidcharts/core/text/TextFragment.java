@@ -182,7 +182,7 @@ public class TextFragment implements Serializable {
 			final double angle, Paint paint) {
 
 		RefineryUtilities.drawRotatedString(this.text, g2, anchorX, anchorY,
-				paint);
+				paint, (float)angle);
 
 	}
 

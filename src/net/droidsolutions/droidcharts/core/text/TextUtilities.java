@@ -50,7 +50,6 @@ import net.droidsolutions.droidcharts.awt.Rectangle;
 import net.droidsolutions.droidcharts.awt.Rectangle2D;
 import net.droidsolutions.droidcharts.common.TextAnchor;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 
@@ -290,15 +289,16 @@ public abstract class TextUtilities {
 			return;
 		}
 		
-		Matrix old = g2.getMatrix();
-		Matrix matrix = new Matrix();
-		// rotate the Bitmap
-		//matrix.postRotate((float) angle);
-		matrix.setRotate((float)angle, x, y);
-		g2.setMatrix(matrix);
-		g2.drawText(text, x, y, paint);
-		matrix.setRotate(0);
-		g2.setMatrix(old);
+		//g2.drawCircle(x, y, 2, paint);
+		g2.save();
+		if (angle == 0.0)
+			g2.drawText(text, x, y, paint);
+		else {
+			g2.rotate((float) angle, x, y);
+			g2.drawText(text, x, y, paint);
+		}
+		g2.restore();
+	
 
 	}
 

@@ -124,14 +124,18 @@
 
 package net.droidsolutions.droidcharts.core;
 
+import net.droidsolutions.droidcharts.common.RectangleInsets;
 import net.droidsolutions.droidcharts.common.TextAnchor;
 import net.droidsolutions.droidcharts.core.axis.CategoryAxis;
 import net.droidsolutions.droidcharts.core.axis.NumberAxis;
 import net.droidsolutions.droidcharts.core.axis.ValueAxis;
 import net.droidsolutions.droidcharts.core.data.CategoryDataset;
+import net.droidsolutions.droidcharts.core.data.PieDataset;
 import net.droidsolutions.droidcharts.core.label.ItemLabelAnchor;
 import net.droidsolutions.droidcharts.core.label.ItemLabelPosition;
+import net.droidsolutions.droidcharts.core.label.StandardPieSectionLabelGenerator;
 import net.droidsolutions.droidcharts.core.plot.CategoryPlot;
+import net.droidsolutions.droidcharts.core.plot.PiePlot;
 import net.droidsolutions.droidcharts.core.plot.PlotOrientation;
 import net.droidsolutions.droidcharts.core.renderer.BarRenderer;
 
@@ -203,5 +207,34 @@ public abstract class ChartFactory {
 		return chart;
 
 	}
+	
+	 /**
+     * Creates a pie chart with default settings.
+     * <P>
+     * The chart object returned by this method uses a {@link PiePlot} instance
+     * as the plot.
+     *
+     * @param title  the chart title (<code>null</code> permitted).
+     * @param dataset  the dataset for the chart (<code>null</code> permitted).
+     * @param legend  a flag specifying whether or not a legend is required.
+     * @param tooltips  configure chart to generate tool tips?
+     * @param urls  configure chart to generate URLs?
+     *
+     * @return A pie chart.
+     */
+    public static JFreeChart createPieChart(String title,
+                                            PieDataset dataset,
+                                            boolean legend,
+                                            boolean tooltips,
+                                            boolean urls) {
+
+        PiePlot plot = new PiePlot(dataset);
+        plot.setLabelGenerator(new StandardPieSectionLabelGenerator());
+        plot.setInsets(new RectangleInsets(0.0, 5.0, 5.0, 5.0));
+      
+        JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
+                plot, legend);
+        return chart;
+    }
 
 }

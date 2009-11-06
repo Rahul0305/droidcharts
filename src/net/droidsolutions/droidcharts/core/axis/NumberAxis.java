@@ -1319,7 +1319,7 @@ public class NumberAxis extends ValueAxis implements Cloneable, Serializable {
 					}
 				} else {
 					if (edge == RectangleEdge.LEFT) {
-						anchor = TextAnchor.CENTER_RIGHT;
+						anchor = TextAnchor.CENTER_LEFT;
 						rotationAnchor = TextAnchor.CENTER_RIGHT;
 					} else {
 						anchor = TextAnchor.CENTER_LEFT;

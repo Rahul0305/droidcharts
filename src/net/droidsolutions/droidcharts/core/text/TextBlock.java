@@ -331,13 +331,13 @@ public class TextBlock implements Serializable {
 				|| anchor == TextBlockAnchor.CENTER
 				|| anchor == TextBlockAnchor.CENTER_RIGHT) {
 
-			yAdj = (float) -height / 2.0f;
+			yAdj = (float) +height / 2.0f;
 
 		} else if (anchor == TextBlockAnchor.BOTTOM_LEFT
 				|| anchor == TextBlockAnchor.BOTTOM_CENTER
 				|| anchor == TextBlockAnchor.BOTTOM_RIGHT) {
 
-			yAdj = (float) -height;
+			yAdj = (float) +height;
 
 		}
 		result[0] = xAdj;
