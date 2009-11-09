@@ -866,6 +866,17 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 						(float) borderArea.getMaxY(), borderPaint);
 			}
 		}
+		
+		// Rectangle2D plotArea = nonTitleArea;
+		Rectangle2D plotArea = chartArea;
+
+		// draw the plot (axes and data visualisation)
+		PlotRenderingInfo plotInfo = null;
+		if (info != null) {
+			plotInfo = info.getPlotInfo();
+		}
+		this.plot.draw(g2, plotArea, anchor, null, plotInfo);
+
 
 		// draw the title and subtitles...
 		Rectangle2D nonTitleArea = new Rectangle2D.Double();
@@ -893,16 +904,7 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 			}
 		}
 
-		// Rectangle2D plotArea = nonTitleArea;
-		Rectangle2D plotArea = chartArea;
-
-		// draw the plot (axes and data visualisation)
-		PlotRenderingInfo plotInfo = null;
-		if (info != null) {
-			plotInfo = info.getPlotInfo();
-		}
-		this.plot.draw(g2, plotArea, anchor, null, plotInfo);
-
+	
 		g2.clipRect(savedClip);
 
 	}

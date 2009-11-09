@@ -172,7 +172,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 
 	/** The default insets. */
 	public static final RectangleInsets DEFAULT_INSETS = new RectangleInsets(
-			4.0, 4.0, 4.0, 4.0);
+			0.0, 0.0, 0.0, 0.0);
 
 	/** The default outline stroke. */
 	public static final float DEFAULT_OUTLINE_STROKE = 0.5f;
@@ -181,7 +181,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	public static final Paint DEFAULT_OUTLINE_PAINT = new Paint(
 			Paint.ANTI_ALIAS_FLAG);
 	static {
-		DEFAULT_OUTLINE_PAINT.setColor(Color.BLUE);
+		DEFAULT_OUTLINE_PAINT.setColor(Color.DKGRAY);
 	}
 
 	/** The default foreground alpha transparency. */

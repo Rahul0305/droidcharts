@@ -70,12 +70,12 @@ public class PieChartExampleView extends View {
 	 */
 	private static PieDataset createDataset() {
 		DefaultPieDataset dataset = new DefaultPieDataset();
-		dataset.setValue("One", new Double(43.2));
-		dataset.setValue("Two", new Double(10.0));
-		dataset.setValue("Three", new Double(27.5));
-		dataset.setValue("Four", new Double(17.5));
-		dataset.setValue("Five", new Double(11.0));
-		dataset.setValue("Six", new Double(19.4));
+		dataset.setValue("One", new Double(1));
+		dataset.setValue("Two", new Double(2));
+		dataset.setValue("Three", new Double(3));
+		dataset.setValue("Four", new Double(4));
+		dataset.setValue("Five", new Double(5));
+		dataset.setValue("Six", new Double(6));
 		return dataset;
 	}
 
