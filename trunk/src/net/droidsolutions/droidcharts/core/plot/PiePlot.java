@@ -2843,7 +2843,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 				labelBox.setInteriorGap(this.labelPadding);
 				double theta = Math.toRadians(leftKeys.getValue(i)
 						.doubleValue());
-				double baseY = state.getPieCenterY() - Math.sin(theta)
+				double baseY = state.getPieCenterY() + Math.sin(theta)
 						* verticalLinkRadius;
 				double hh = labelBox.getHeight(g2);
 
@@ -2905,7 +2905,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 				labelBox.setShadowPaint(this.labelShadowPaint);
 				labelBox.setInteriorGap(this.labelPadding);
 				double theta = Math.toRadians(keys.getValue(i).doubleValue());
-				double baseY = state.getPieCenterY() - Math.sin(theta)
+				double baseY = state.getPieCenterY() + Math.sin(theta)
 						* verticalLinkRadius;
 				double hh = labelBox.getHeight(g2);
 				this.labelDistributor.addPieLabelRecord(new PieLabelRecord(keys
@@ -3058,11 +3058,11 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			double theta = record.getAngle();
 			double linkX = state.getPieCenterX() + Math.cos(theta)
 					* state.getPieWRadius() * record.getLinkPercent();
-			double linkY = state.getPieCenterY() - Math.sin(theta)
+			double linkY = state.getPieCenterY() + Math.sin(theta)
 					* state.getPieHRadius() * record.getLinkPercent();
 			double elbowX = state.getPieCenterX() + Math.cos(theta)
 					* state.getLinkArea().getWidth() / 2.0;
-			double elbowY = state.getPieCenterY() - Math.sin(theta)
+			double elbowY = state.getPieCenterY() + Math.sin(theta)
 					* state.getLinkArea().getHeight() / 2.0;
 			double anchorY = elbowY;
 			labelLinkPaint.setStyle(Paint.Style.STROKE);
@@ -3115,11 +3115,11 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 			double theta = record.getAngle();
 			double linkX = state.getPieCenterX() + Math.cos(theta)
 					* state.getPieWRadius() * record.getLinkPercent();
-			double linkY = state.getPieCenterY() - Math.sin(theta)
+			double linkY = state.getPieCenterY() + Math.sin(theta)
 					* state.getPieHRadius() * record.getLinkPercent();
 			double elbowX = state.getPieCenterX() + Math.cos(theta)
 					* state.getLinkArea().getWidth() / 2.0;
-			double elbowY = state.getPieCenterY() - Math.sin(theta)
+			double elbowY = state.getPieCenterY() + Math.sin(theta)
 					* state.getLinkArea().getHeight() / 2.0;
 			double anchorY = elbowY;
 			labelLinkPaint.setStyle(Paint.Style.STROKE);
