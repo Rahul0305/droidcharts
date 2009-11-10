@@ -1,5 +1,7 @@
 package net.droidsolutions.droidcharts;
 
+import java.text.DecimalFormat;
+
 import net.droidsolutions.droidcharts.awt.Rectangle2D;
 import net.droidsolutions.droidcharts.common.RectangleInsets;
 import net.droidsolutions.droidcharts.common.TextAnchor;
@@ -13,6 +15,7 @@ import net.droidsolutions.droidcharts.core.data.CategoryDataset;
 import net.droidsolutions.droidcharts.core.data.general.DatasetUtilities;
 import net.droidsolutions.droidcharts.core.label.ItemLabelAnchor;
 import net.droidsolutions.droidcharts.core.label.ItemLabelPosition;
+import net.droidsolutions.droidcharts.core.label.StandardCategoryItemLabelGenerator;
 import net.droidsolutions.droidcharts.core.plot.CategoryPlot;
 import net.droidsolutions.droidcharts.core.plot.PlotOrientation;
 import net.droidsolutions.droidcharts.core.renderer.BarRenderer;
@@ -121,17 +124,12 @@ public class BarChartExampleView extends View {
 		// get a reference to the plot for further customisation...
 		final CategoryPlot plot = chart.getCategoryPlot();
 		Resources res = getResources();
-	
 
 		final CategoryItemRenderer renderer = new CustomRenderer(new int[] {
-				res.getColor(R.color.color0),
-				res.getColor(R.color.color1),
-				res.getColor(R.color.color2),
-				res.getColor(R.color.color3),
-				res.getColor(R.color.color4),
-				res.getColor(R.color.color5),
-				res.getColor(R.color.color6),
-				res.getColor(R.color.color7)});
+				res.getColor(R.color.color0), res.getColor(R.color.color1),
+				res.getColor(R.color.color2), res.getColor(R.color.color3),
+				res.getColor(R.color.color4), res.getColor(R.color.color5),
+				res.getColor(R.color.color6), res.getColor(R.color.color7) });
 		final ItemLabelPosition p = new ItemLabelPosition(
 				ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER,
 				45.0);
@@ -149,8 +147,19 @@ public class BarChartExampleView extends View {
 		rangeAxis.setLabelAngle(90);
 
 		final CategoryAxis domainAxis = plot.getDomainAxis();
+		BarRenderer barRenderer = (BarRenderer) plot.getRenderer();
+		DecimalFormat decimalformat1 = new DecimalFormat("$##,###.00");
+		barRenderer
+				.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator(
+						"{2}", decimalformat1));
+		barRenderer.setBaseItemLabelsVisible(true);
+		barRenderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE11, TextAnchor.CENTER));
+		barRenderer.setBaseNegativeItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.OUTSIDE7, TextAnchor.CENTER));
+		barRenderer.setItemLabelsVisible(true);
+		
+		chart.getCategoryPlot().setRenderer(renderer);
 
-		 domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
+		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
 		return chart;
 
 	}

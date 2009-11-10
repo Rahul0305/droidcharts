@@ -1164,21 +1164,29 @@ public class BarRenderer extends AbstractCategoryItemRenderer implements
 		Point2D anchorPoint = calculateLabelAnchorPoint(position
 				.getItemLabelAnchor(), bar, plot.getOrientation());
 
-		/*
-		 * if (isInternalAnchor(position.getItemLabelAnchor())) { Shape bounds =
-		 * TextUtilities.calculateRotatedStringBounds(label, g2, (float)
-		 * anchorPoint.getX(), (float) anchorPoint.getY(),
-		 * position.getTextAnchor(), position.getAngle(),
-		 * position.getRotationAnchor());
-		 * 
-		 * if (bounds != null) { if (!bar.contains(bounds.getBounds2D())) { if
-		 * (!negative) { position = getPositiveItemLabelPositionFallback(); }
-		 * else { position = getNegativeItemLabelPositionFallback(); } if
-		 * (position != null) { anchorPoint = calculateLabelAnchorPoint(
-		 * position.getItemLabelAnchor(), bar, plot.getOrientation()); } } }
-		 * 
-		 * }
-		 */
+		
+	/*	if (isInternalAnchor(position.getItemLabelAnchor())) {
+			Shape bounds = TextUtilities.calculateRotatedStringBounds(label,
+					g2, (float) anchorPoint.getX(), (float) anchorPoint.getY(),
+					position.getTextAnchor(), position.getAngle(), position
+							.getRotationAnchor());
+
+			if (bounds != null) {
+				if (!bar.contains(bounds.getBounds2D())) {
+					if (!negative) {
+						position = getPositiveItemLabelPositionFallback();
+					} else {
+						position = getNegativeItemLabelPositionFallback();
+					}
+					if (position != null) {
+						anchorPoint = calculateLabelAnchorPoint(position
+								.getItemLabelAnchor(), bar, plot
+								.getOrientation());
+					}
+				}
+			}
+
+		}*/
 
 		if (position != null) {
 			TextUtilities.drawRotatedString(label, g2, (float) anchorPoint
