@@ -145,6 +145,7 @@ public class BarChartExampleView extends View {
 		rangeAxis.setLowerMargin(0.15);
 		rangeAxis.setUpperMargin(0.15);
 		rangeAxis.setLabelAngle(90);
+		
 
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		BarRenderer barRenderer = (BarRenderer) plot.getRenderer();

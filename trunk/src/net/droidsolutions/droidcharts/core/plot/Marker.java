@@ -96,7 +96,7 @@ public abstract class Marker implements Cloneable, Serializable {
 	private transient float outlineStroke;
 
 	/** The alpha transparency. */
-	private float alpha;
+	private int alpha;
 
 	/** The label. */
 	private String label = null;
@@ -135,7 +135,7 @@ public abstract class Marker implements Cloneable, Serializable {
 	 *            the paint (<code>null</code> not permitted).
 	 */
 	protected Marker(int paint) {
-		this(paint, 0.5f, Color.GRAY, 0.5f, 0.80f);
+		this(paint, 0.5f, Color.GRAY, 0.5f, 200);
 	}
 
 	/**
@@ -158,11 +158,9 @@ public abstract class Marker implements Cloneable, Serializable {
 	 *             specified range.
 	 */
 	protected Marker(int paint, float stroke, int outlinePaint,
-			float outlineStroke, float alpha) {
+			float outlineStroke, int alpha) {
 
-		if (alpha < 0.0f || alpha > 1.0f)
-			throw new IllegalArgumentException(
-					"The 'alpha' value must be in the range 0.0f to 1.0f");
+		
 		Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
 		p.setColor(paint);
 		this.paint = p;
@@ -267,7 +265,7 @@ public abstract class Marker implements Cloneable, Serializable {
 	 * 
 	 * @see #setOutlineStroke(Stroke)
 	 */
-	public float getOutlineStroke() {
+	public Float getOutlineStroke() {
 		return this.outlineStroke;
 	}
 
@@ -291,7 +289,7 @@ public abstract class Marker implements Cloneable, Serializable {
 	 * 
 	 * @see #setAlpha(float)
 	 */
-	public float getAlpha() {
+	public int getAlpha() {
 		return this.alpha;
 	}
 
@@ -302,17 +300,15 @@ public abstract class Marker implements Cloneable, Serializable {
 	 * to 1.0f (completely opaque).
 	 * 
 	 * @param alpha
-	 *            the alpha transparency (must be in the range 0.0f to 1.0f).
+	 *            the alpha transparency (must be in the range 0 to 255).
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if <code>alpha</code> is not in the specified range.
 	 * 
 	 * @see #getAlpha()
 	 */
-	public void setAlpha(float alpha) {
-		if (alpha < 0.0f || alpha > 1.0f)
-			throw new IllegalArgumentException(
-					"The 'alpha' value must be in the range 0.0f to 1.0f");
+	public void setAlpha(int alpha) {
+		
 		this.alpha = alpha;
 	}
 

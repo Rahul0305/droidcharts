@@ -105,11 +105,13 @@
  * 
  */
 
-package net.droidsolutions.droidcharts.core.renderer;
+package net.droidsolutions.droidcharts.core.renderer.category;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import net.droidsolutions.droidcharts.awt.Ellipse2D;
 import net.droidsolutions.droidcharts.awt.Font;
@@ -131,7 +133,6 @@ import net.droidsolutions.droidcharts.core.data.Range;
 import net.droidsolutions.droidcharts.core.data.general.DatasetUtilities;
 import net.droidsolutions.droidcharts.core.entity.CategoryItemEntity;
 import net.droidsolutions.droidcharts.core.entity.EntityCollection;
-import net.droidsolutions.droidcharts.core.event.RendererChangeEvent;
 import net.droidsolutions.droidcharts.core.label.CategoryItemLabelGenerator;
 import net.droidsolutions.droidcharts.core.label.CategorySeriesLabelGenerator;
 import net.droidsolutions.droidcharts.core.label.ItemLabelPosition;
@@ -145,46 +146,12 @@ import net.droidsolutions.droidcharts.core.plot.Marker;
 import net.droidsolutions.droidcharts.core.plot.PlotOrientation;
 import net.droidsolutions.droidcharts.core.plot.PlotRenderingInfo;
 import net.droidsolutions.droidcharts.core.plot.ValueMarker;
+import net.droidsolutions.droidcharts.core.renderer.AbstractRenderer;
+import net.droidsolutions.droidcharts.core.renderer.CategoryItemRenderer;
+import net.droidsolutions.droidcharts.core.renderer.CategoryItemRendererState;
 import net.droidsolutions.droidcharts.core.text.TextUtilities;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 
-/*import org.jfree.chart.LegendItem;
- import org.jfree.chart.LegendItemCollection;
- import org.jfree.chart.axis.CategoryAxis;
- import org.jfree.chart.axis.ValueAxis;
- import org.jfree.chart.entity.CategoryItemEntity;
- import org.jfree.chart.entity.EntityCollection;
- import org.jfree.chart.event.RendererChangeEvent;
- import org.jfree.chart.labels.CategoryItemLabelGenerator;
- import org.jfree.chart.labels.CategorySeriesLabelGenerator;
- import org.jfree.chart.labels.CategoryToolTipGenerator;
- import org.jfree.chart.labels.ItemLabelPosition;
- import org.jfree.chart.labels.StandardCategorySeriesLabelGenerator;
- import org.jfree.chart.plot.CategoryCrosshairState;
- import org.jfree.chart.plot.CategoryMarker;
- import org.jfree.chart.plot.CategoryPlot;
- import org.jfree.chart.plot.DrawingSupplier;
- import org.jfree.chart.plot.IntervalMarker;
- import org.jfree.chart.plot.Marker;
- import org.jfree.chart.plot.PlotOrientation;
- import org.jfree.chart.plot.PlotRenderingInfo;
- import org.jfree.chart.plot.ValueMarker;
- import org.jfree.chart.renderer.AbstractRenderer;
- import org.jfree.chart.urls.CategoryURLGenerator;
- import org.jfree.data.Range;
- import org.jfree.data.category.CategoryDataset;
- import org.jfree.data.general.DatasetUtilities;
- import org.jfree.text.TextUtilities;
- import org.jfree.ui.GradientPaintTransformer;
- import org.jfree.ui.LengthAdjustmentType;
- import org.jfree.ui.RectangleAnchor;
- import org.jfree.ui.RectangleEdge;
- import org.jfree.ui.RectangleInsets;
- import org.jfree.util.ObjectList;
- import org.jfree.util.ObjectUtilities;
- import org.jfree.util.PublicCloneable;
- */
+
 /**
  * An abstract base class that you can use to implement a new
  * {@link CategoryItemRenderer}. When you create a new
@@ -192,7 +159,7 @@ import android.graphics.Paint;
  * it makes the job easier.
  */
 public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
-		implements CategoryItemRenderer, Cloneable, Serializable {
+		implements CategoryItemRenderer, Cloneable {
 
 	/** For serialization. */
 	private static final long serialVersionUID = 1247553218442497391L;
@@ -205,12 +172,6 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 
 	/** The base item label generator. */
 	private CategoryItemLabelGenerator baseItemLabelGenerator;
-
-	/** A list of tool tip generators (one per series). */
-	private ObjectList toolTipGeneratorList;
-
-	/** A list of item label generators (one per series). */
-	private ObjectList itemURLGeneratorList;
 
 	/** The legend item label generator. */
 	private CategorySeriesLabelGenerator legendItemLabelGenerator;
@@ -236,8 +197,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	protected AbstractCategoryItemRenderer() {
 		this.itemLabelGenerator = null;
 		this.itemLabelGeneratorList = new ObjectList();
-		this.toolTipGeneratorList = new ObjectList();
-		this.itemURLGeneratorList = new ObjectList();
+
 		this.legendItemLabelGenerator = new StandardCategorySeriesLabelGenerator();
 	}
 
@@ -342,6 +302,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	public void setSeriesItemLabelGenerator(int series,
 			CategoryItemLabelGenerator generator) {
 		this.itemLabelGeneratorList.set(series, generator);
+		// fireChangeEvent();
 	}
 
 	/**
@@ -366,9 +327,8 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 */
 	public void setBaseItemLabelGenerator(CategoryItemLabelGenerator generator) {
 		this.baseItemLabelGenerator = generator;
+		// fireChangeEvent();
 	}
-
-	// TOOL TIP GENERATOR
 
 	/**
 	 * Returns the number of rows in the dataset. This value is updated in the
@@ -607,10 +567,17 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			paint = CategoryPlot.DEFAULT_GRIDLINE_PAINT;
 		}
 
-		float stroke = plot.getDomainGridlineStroke();
+		Float stroke = plot.getDomainGridlineStroke();
+		if (stroke == null) {
+			stroke = CategoryPlot.DEFAULT_GRIDLINE_STROKE;
+		}
+
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeCap(Paint.Cap.ROUND);
 		paint.setStrokeWidth(stroke);
 		g2.drawLine((float) line.getX1(), (float) line.getY1(), (float) line
 				.getX2(), (float) line.getY2(), paint);
+
 	}
 
 	/**
@@ -654,8 +621,13 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			paint = CategoryPlot.DEFAULT_GRIDLINE_PAINT;
 		}
 
-		float stroke = plot.getRangeGridlineStroke();
+		Float stroke = plot.getRangeGridlineStroke();
+		if (stroke == null) {
+			stroke = CategoryPlot.DEFAULT_GRIDLINE_STROKE;
+		}
 
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeCap(Paint.Cap.ROUND);
 		paint.setStrokeWidth(stroke);
 		g2.drawLine((float) line.getX1(), (float) line.getY1(), (float) line
 				.getX2(), (float) line.getY2(), paint);
@@ -686,7 +658,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * @since 1.0.13
 	 */
 	public void drawRangeLine(Canvas g2, CategoryPlot plot, ValueAxis axis,
-			Rectangle2D dataArea, double value, Paint paint, float stroke) {
+			Rectangle2D dataArea, double value, Paint paint, Float stroke) {
 
 		// TODO: In JFreeChart 1.2.0, put this method in the
 		// CategoryItemRenderer interface
@@ -706,6 +678,8 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 					v);
 		}
 
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeCap(Paint.Cap.ROUND);
 		paint.setStrokeWidth(stroke);
 		g2.drawLine((float) line.getX1(), (float) line.getY1(), (float) line
 				.getX2(), (float) line.getY2(), paint);
@@ -739,9 +713,6 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			return;
 		}
 
-		Paint paint = marker.getPaint();
-		paint.setAlpha( marker.getAlpha() );
-
 		PlotOrientation orientation = plot.getOrientation();
 		Rectangle2D bounds = null;
 		if (marker.getDrawAsLine()) {
@@ -755,10 +726,18 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				line = new Line2D.Double(v, dataArea.getMinY(), v, dataArea
 						.getMaxY());
 			}
+			Paint paint = marker.getPaint();
 
-			paint.setStrokeWidth(marker.getStroke());
+			int oldAlpha = paint.getAlpha();
+			paint.setAlpha(marker.getAlpha());
+			Float stroke = marker.getStroke();
+
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setStrokeCap(Paint.Cap.ROUND);
+			paint.setStrokeWidth(stroke);
 			g2.drawLine((float) line.getX1(), (float) line.getY1(),
 					(float) line.getX2(), (float) line.getY2(), paint);
+			paint.setAlpha(oldAlpha);
 			bounds = line.getBounds2D();
 		} else {
 			double v0 = axis.getCategoryStart(columnIndex, dataset
@@ -773,10 +752,14 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				area = new Rectangle2D.Double(v0, dataArea.getMinY(),
 						(v1 - v0), dataArea.getHeight());
 			}
-			Paint p = marker.getPaint();
-			p.setStyle(Paint.Style.FILL);
+			Paint paint = marker.getPaint();
+			int oldAlpha = paint.getAlpha();
+			paint.setAlpha(marker.getAlpha());
+
+			paint.setStyle(Paint.Style.FILL);
 			g2.drawRect((float) area.getMinX(), (float) area.getMinY(),
-					(float) area.getMaxX(), (float) area.getMaxY(), p);
+					(float) area.getMaxX(), (float) area.getMaxY(), paint);
+			paint.setAlpha(oldAlpha);
 			bounds = area;
 		}
 
@@ -784,16 +767,22 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		RectangleAnchor anchor = marker.getLabelAnchor();
 		if (label != null) {
 			Font labelFont = marker.getLabelFont();
-			// g2.setFont(labelFont);
-			// g2.setPaint(marker.getLabelPaint());
+
+			Paint paint = marker.getLabelPaint();
+			int oldAlpha = paint.getAlpha();
+			paint.setTypeface(labelFont.getTypeFace());
+			paint.setTextSize(labelFont.getSize());
+			paint.setAlpha(marker.getAlpha());
 			Point2D coordinates = calculateDomainMarkerTextAnchorPoint(g2,
 					orientation, dataArea, bounds, marker.getLabelOffset(),
 					marker.getLabelOffsetType(), anchor);
+
 			TextUtilities.drawAlignedString(label, g2, (float) coordinates
 					.getX(), (float) coordinates.getY(), marker
-					.getLabelTextAnchor(), marker.getLabelPaint());
+					.getLabelTextAnchor(), paint);
+			paint.setAlpha(oldAlpha);
 		}
-		// g2.setComposite(savedComposite);
+
 	}
 
 	/**
@@ -837,28 +826,38 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 						.getMaxX(), v);
 			}
 
-			Paint p = marker.getPaint();
-			p.setAlpha( vm.getAlpha());
-			p.setStrokeWidth(marker.getStroke());
+			Paint paint = marker.getPaint();
+
+			int oldAlpha = paint.getAlpha();
+			paint.setAlpha(marker.getAlpha());
+			Float stroke = marker.getStroke();
+
+			paint.setStyle(Paint.Style.STROKE);
+			paint.setStrokeCap(Paint.Cap.ROUND);
+			paint.setStrokeWidth(stroke);
 			g2.drawLine((float) line.getX1(), (float) line.getY1(),
-					(float) line.getX2(), (float) line.getY2(), p);
+					(float) line.getX2(), (float) line.getY2(), paint);
+			paint.setAlpha(oldAlpha);
 
 			String label = marker.getLabel();
 			RectangleAnchor anchor = marker.getLabelAnchor();
 			if (label != null) {
 				Font labelFont = marker.getLabelFont();
-				// g2.setFont(labelFont);
+				Paint LabelPaint = marker.getLabelPaint();
 
+				LabelPaint.setTypeface(labelFont.getTypeFace());
+				LabelPaint.setTextSize(labelFont.getSize());
+				LabelPaint.setAlpha(marker.getAlpha());
 				Point2D coordinates = calculateRangeMarkerTextAnchorPoint(g2,
 						orientation, dataArea, line.getBounds2D(), marker
 								.getLabelOffset(), LengthAdjustmentType.EXPAND,
 						anchor);
 				TextUtilities.drawAlignedString(label, g2, (float) coordinates
 						.getX(), (float) coordinates.getY(), marker
-						.getLabelTextAnchor(), marker.getLabelPaint());
+						.getLabelTextAnchor(), LabelPaint);
+				LabelPaint.setAlpha(oldAlpha);
 			}
-			// g2.setComposite(savedComposite);
-			p.setAlpha(255);
+
 		} else if (marker instanceof IntervalMarker) {
 			IntervalMarker im = (IntervalMarker) marker;
 			double start = im.getStartValue();
@@ -891,51 +890,65 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 						.getWidth(), high - low);
 			}
 			Paint p = marker.getPaint();
-			p.setAlpha((int) marker.getAlpha() * 100);// TODO ALPHA
+			int oldAlpha = p.getAlpha();
+			p.setAlpha(marker.getAlpha());
 			p.setStyle(Paint.Style.FILL);
 
 			g2.drawRect((float) rect.getMinX(), (float) rect.getMinY(),
-					(float) rect.getMaxX(), (float) rect.getMinY(), p);
+					(float) rect.getMaxX(), (float) rect.getMaxY(), p);
+			p.setAlpha(oldAlpha);
 
 			// now draw the outlines, if visible...
-			if (im.getOutlinePaint() != null && im.getOutlineStroke() != 0.0f) {
+			if (im.getOutlinePaint() != null && im.getOutlineStroke() != null) {
 				if (orientation == PlotOrientation.VERTICAL) {
 					Line2D line = new Line2D.Double();
 					double x0 = dataArea.getMinX();
 					double x1 = dataArea.getMaxX();
-					Paint paint = im.getOutlinePaint();
-					paint.setStrokeWidth(im.getOutlineStroke());
+					Paint outlinePaint = im.getOutlinePaint();
+
+					outlinePaint.setAlpha(marker.getAlpha());
+
+					outlinePaint.setStyle(Paint.Style.STROKE);
+					outlinePaint.setStrokeCap(Paint.Cap.ROUND);
+					outlinePaint.setStrokeWidth(im.getOutlineStroke());
 
 					if (range.contains(start)) {
 						line.setLine(x0, start2d, x1, start2d);
 						g2.drawLine((float) line.getX1(), (float) line.getY1(),
 								(float) line.getX2(), (float) line.getY2(),
-								paint);
+								outlinePaint);
 					}
 					if (range.contains(end)) {
 						line.setLine(x0, end2d, x1, end2d);
 						g2.drawLine((float) line.getX1(), (float) line.getY1(),
 								(float) line.getX2(), (float) line.getY2(),
-								paint);
+								outlinePaint);
 					}
+					outlinePaint.setAlpha(oldAlpha);
 				} else { // PlotOrientation.HORIZONTAL
 					Line2D line = new Line2D.Double();
 					double y0 = dataArea.getMinY();
 					double y1 = dataArea.getMaxY();
-					Paint paint = im.getOutlinePaint();
-					paint.setStrokeWidth(im.getOutlineStroke());
+					Paint outlinePaint = im.getOutlinePaint();
+
+					outlinePaint.setAlpha(marker.getAlpha());
+
+					outlinePaint.setStyle(Paint.Style.STROKE);
+					outlinePaint.setStrokeCap(Paint.Cap.ROUND);
+					outlinePaint.setStrokeWidth(im.getOutlineStroke());
 					if (range.contains(start)) {
 						line.setLine(start2d, y0, start2d, y1);
 						g2.drawLine((float) line.getX1(), (float) line.getY1(),
 								(float) line.getX2(), (float) line.getY2(),
-								paint);
+								outlinePaint);
 					}
 					if (range.contains(end)) {
 						line.setLine(end2d, y0, end2d, y1);
 						g2.drawLine((float) line.getX1(), (float) line.getY1(),
 								(float) line.getX2(), (float) line.getY2(),
-								paint);
+								outlinePaint);
 					}
+					outlinePaint.setAlpha(oldAlpha);
 				}
 			}
 
@@ -943,17 +956,20 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			RectangleAnchor anchor = marker.getLabelAnchor();
 			if (label != null) {
 				Font labelFont = marker.getLabelFont();
-				// g2.setFont(labelFont);
-				Paint pp = marker.getLabelPaint();
-				// g2.setPaint(marker.getLabelPaint());
+				Paint LabelPaint = marker.getLabelPaint();
+
+				LabelPaint.setTypeface(labelFont.getTypeFace());
+				LabelPaint.setTextSize(labelFont.getSize());
+				LabelPaint.setAlpha(marker.getAlpha());
 				Point2D coordinates = calculateRangeMarkerTextAnchorPoint(g2,
 						orientation, dataArea, rect, marker.getLabelOffset(),
 						marker.getLabelOffsetType(), anchor);
 				TextUtilities.drawAlignedString(label, g2, (float) coordinates
 						.getX(), (float) coordinates.getY(), marker
-						.getLabelTextAnchor(), pp);
+						.getLabelTextAnchor(), LabelPaint);
+				LabelPaint.setAlpha(oldAlpha);
 			}
-			p.setAlpha(255);
+
 		}
 	}
 
@@ -1075,7 +1091,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		Shape shape = lookupLegendShape(series);
 		Paint paint = lookupSeriesPaint(series);
 		Paint outlinePaint = lookupSeriesOutlinePaint(series);
-		float outlineStroke = lookupSeriesOutlineStroke(series);
+		Float outlineStroke = lookupSeriesOutlineStroke(series);
 
 		LegendItem item = new LegendItem(label, description, toolTipText,
 				urlText, shape, paint.getColor(), outlineStroke, outlinePaint
@@ -1182,8 +1198,8 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		if (generator != null) {
 			Font labelFont = getItemLabelFont(row, column);
 			Paint paint = getItemLabelPaint(row, column);
-			// g2.setFont(labelFont);
-			// g2.setPaint(paint);
+			paint.setTypeface(labelFont.getTypeFace());
+			paint.setTextSize(labelFont.getSize());
 			String label = generator.generateLabel(dataset, row, column);
 			ItemLabelPosition position = null;
 			if (!negative) {
@@ -1293,6 +1309,7 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 			throw new IllegalArgumentException("Null 'generator' argument.");
 		}
 		this.legendItemLabelGenerator = generator;
+		// fireChangeEvent();
 	}
 
 	/**
@@ -1304,44 +1321,6 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 */
 	public CategorySeriesLabelGenerator getLegendItemToolTipGenerator() {
 		return this.legendItemToolTipGenerator;
-	}
-
-	/**
-	 * Sets the legend item tool tip generator and sends a
-	 * {@link RendererChangeEvent} to all registered listeners.
-	 * 
-	 * @param generator
-	 *            the generator (<code>null</code> permitted).
-	 * 
-	 * @see #setLegendItemToolTipGenerator(CategorySeriesLabelGenerator)
-	 */
-	public void setLegendItemToolTipGenerator(
-			CategorySeriesLabelGenerator generator) {
-		this.legendItemToolTipGenerator = generator;
-	}
-
-	/**
-	 * Returns the legend item URL generator.
-	 * 
-	 * @return The URL generator (possibly <code>null</code>).
-	 * 
-	 * @see #setLegendItemURLGenerator(CategorySeriesLabelGenerator)
-	 */
-	public CategorySeriesLabelGenerator getLegendItemURLGenerator() {
-		return this.legendItemURLGenerator;
-	}
-
-	/**
-	 * Sets the legend item URL generator and sends a
-	 * {@link RendererChangeEvent} to all registered listeners.
-	 * 
-	 * @param generator
-	 *            the generator (<code>null</code> permitted).
-	 * 
-	 * @see #getLegendItemURLGenerator()
-	 */
-	public void setLegendItemURLGenerator(CategorySeriesLabelGenerator generator) {
-		this.legendItemURLGenerator = generator;
 	}
 
 	/**
@@ -1366,9 +1345,8 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 		if (!getItemCreateEntity(row, column)) {
 			return;
 		}
-		String tip = null;
 
-		CategoryItemEntity entity = new CategoryItemEntity(hotspot, tip, "",
+		CategoryItemEntity entity = new CategoryItemEntity(hotspot, "", "",
 				dataset, dataset.getRowKey(row), dataset.getColumnKey(column));
 		entities.add(entity);
 	}
@@ -1411,9 +1389,8 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 				s = new Ellipse2D.Double(entityY - r, entityX - r, w, w);
 			}
 		}
-		String tip = null;
 
-		CategoryItemEntity entity = new CategoryItemEntity(s, tip, "", dataset,
+		CategoryItemEntity entity = new CategoryItemEntity(s, "", "", dataset,
 				dataset.getRowKey(row), dataset.getColumnKey(column));
 		entities.add(entity);
 	}
@@ -1426,5 +1403,24 @@ public abstract class AbstractCategoryItemRenderer extends AbstractRenderer
 	 * @deprecated This field is redundant and deprecated as of version 1.0.6.
 	 */
 	private CategoryItemLabelGenerator itemLabelGenerator;
+
+	/**
+	 * Sets the item label generator for ALL series and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
+	 * 
+	 * @param generator
+	 *            the generator (<code>null</code> permitted).
+	 * 
+	 * @deprecated This method should no longer be used (as of version 1.0.6).
+	 *             It is sufficient to rely on
+	 *             {@link #setSeriesItemLabelGenerator(int, CategoryItemLabelGenerator)}
+	 *             and
+	 *             {@link #setBaseItemLabelGenerator(CategoryItemLabelGenerator)}
+	 *             .
+	 */
+	public void setItemLabelGenerator(CategoryItemLabelGenerator generator) {
+		this.itemLabelGenerator = generator;
+		// fireChangeEvent();
+	}
 
 }

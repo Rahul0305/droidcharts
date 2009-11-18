@@ -402,7 +402,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 		// this.shape = null;
 		this.shapeList = new ShapeList();
 		this.baseShape = DEFAULT_SHAPE;
-		this.autoPopulateSeriesShape = true;
+		this.autoPopulateSeriesShape = false;
 
 		// this.itemLabelsVisible = null;
 		this.itemLabelsVisibleList = new BooleanList();

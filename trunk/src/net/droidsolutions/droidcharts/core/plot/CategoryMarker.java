@@ -86,7 +86,7 @@ public class CategoryMarker extends Marker implements Cloneable, Serializable {
 	 *            the stroke (<code>null</code> not permitted).
 	 */
 	public CategoryMarker(Comparable key, int paint, int stroke) {
-		this(key, paint, stroke, paint, stroke, 1.0f);
+		this(key, paint, stroke, paint, stroke, 255);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class CategoryMarker extends Marker implements Cloneable, Serializable {
 	 *            the alpha transparency.
 	 */
 	public CategoryMarker(Comparable key, int paint, float stroke,
-			int outlinePaint, float outlineStroke, float alpha) {
+			int outlinePaint, float outlineStroke, int alpha) {
 		super(paint, stroke, outlinePaint, outlineStroke, alpha);
 		this.key = key;
 		setLabelOffsetType(LengthAdjustmentType.EXPAND);
