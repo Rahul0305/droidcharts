@@ -17,7 +17,7 @@ public class StartActivity extends Activity {
 		// BarChartCategoryExampletView mView = new
 		// BarChartCategoryExampletView(this);
 		// BarChartExampleView mView = new BarChartExampleView(this);
-		PieChartExampleView mView = new PieChartExampleView(this);
+		LineChartExampleView mView = new LineChartExampleView(this);
 		
 		mView.setOnCreateContextMenuListener(new ChartsContextMenuListener());
 		String title = "My Chart";
@@ -38,6 +38,7 @@ public class StartActivity extends Activity {
 			menu.add(1, 1, 1, "Pie Chart");
 			menu.add(1, 2, 2, "Bar Chart");
 			menu.add(1, 3, 3, "Category Bar Chart");
+			menu.add(1, 4, 4, "Line Chart");
 			
 		}
 		
@@ -61,6 +62,14 @@ public class StartActivity extends Activity {
 
 		if (aItem.getItemId() == 3) {
 			BarChartCategoryExampletView mView = new BarChartCategoryExampletView(
+					this);
+			mView.setOnCreateContextMenuListener(new ChartsContextMenuListener());
+			setContentView(mView);
+			return true;
+		}
+		
+		if (aItem.getItemId() == 4) {
+			LineChartExampleView mView = new LineChartExampleView(
 					this);
 			mView.setOnCreateContextMenuListener(new ChartsContextMenuListener());
 			setContentView(mView);

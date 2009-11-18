@@ -211,7 +211,7 @@ public class MarkerAxisBand implements Serializable {
 					- s, h - this.topOuterGap - this.bottomOuterGap);
 
 			Paint p = marker.getPaint();
-			p.setAlpha((int) (marker.getAlpha() * 100));// TODO ACHTUNG
+			p.setAlpha((int) (marker.getAlpha() ));
 			p.setStyle(Paint.Style.FILL);
 			g2.drawRect((float) r.getMinX(), (float) r.getMinY(), (float) r
 					.getMaxX(), (float) r.getMaxY(), p);

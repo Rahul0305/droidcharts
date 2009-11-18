@@ -77,7 +77,7 @@ public class IntervalMarker extends Marker implements Cloneable, Serializable {
 	 *            the end of the interval.
 	 */
 	public IntervalMarker(double start, double end) {
-		this(start, end, Color.GRAY, 0.5f, Color.GRAY, 0.5f, 0.8f);
+		this(start, end, Color.GRAY, 0.5f, Color.GRAY, 0.5f, 200);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class IntervalMarker extends Marker implements Cloneable, Serializable {
 	 */
 	public IntervalMarker(double start, double end, int paint) {
 		// this(start, end, paint, 0.5f, 0, 0.8f);
-		this(start, end, paint, 0.5f, paint, 0.5f, 0.8f);
+		this(start, end, paint, 0.5f, paint, 0.5f, 200);
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class IntervalMarker extends Marker implements Cloneable, Serializable {
 	 *            the alpha transparency.
 	 */
 	public IntervalMarker(double start, double end, int paint, float stroke,
-			int outlinePaint, float outlineStroke, float alpha) {
+			int outlinePaint, float outlineStroke, int alpha) {
 
 		super(paint, stroke, outlinePaint, outlineStroke, alpha);
 		this.startValue = start;

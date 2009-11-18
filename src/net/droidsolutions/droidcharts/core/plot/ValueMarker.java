@@ -76,7 +76,7 @@ public class ValueMarker extends Marker {
 	 *            the stroke (<code>null</code> not permitted).
 	 */
 	public ValueMarker(double value, int paint, float stroke) {
-		this(value, paint, stroke, paint, stroke, 1.0f);
+		this(value, paint, stroke, paint, stroke, 255);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ValueMarker extends Marker {
 	 *            the alpha transparency (in the range 0.0f to 1.0f).
 	 */
 	public ValueMarker(double value, int paint, float stroke, int outlinePaint,
-			float outlineStroke, float alpha) {
+			float outlineStroke, int alpha) {
 		super(paint, stroke, outlinePaint, outlineStroke, alpha);
 		this.value = value;
 	}
