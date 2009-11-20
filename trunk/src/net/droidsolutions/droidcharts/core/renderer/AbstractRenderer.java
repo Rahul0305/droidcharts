@@ -402,7 +402,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 		// this.shape = null;
 		this.shapeList = new ShapeList();
 		this.baseShape = DEFAULT_SHAPE;
-		this.autoPopulateSeriesShape = false;
+		this.autoPopulateSeriesShape = true;
 
 		// this.itemLabelsVisible = null;
 		this.itemLabelsVisibleList = new BooleanList();
@@ -1224,7 +1224,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @return The stroke (never <code>null</code>).
 	 */
-	public float getItemStroke(int row, int column) {
+	public Float getItemStroke(int row, int column) {
 		return lookupSeriesStroke(row);
 	}
 
@@ -1241,8 +1241,8 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	public float lookupSeriesStroke(int series) {
 
 		// otherwise look up the paint table
-		float result = getSeriesStroke(series);
-		if (this.autoPopulateSeriesStroke) {
+		Float result = getSeriesStroke(series);
+		if (result==null && this.autoPopulateSeriesStroke) {
 			DrawingSupplier supplier = getDrawingSupplier();
 			if (supplier != null) {
 				result = supplier.getNextStroke();
@@ -1266,7 +1266,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @see #setSeriesStroke(int, Stroke)
 	 */
-	public float getSeriesStroke(int series) {
+	public Float getSeriesStroke(int series) {
 		return this.strokeList.getStroke(series);
 	}
 
@@ -1324,7 +1324,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @see #setBaseStroke(Stroke)
 	 */
-	public float getBaseStroke() {
+	public Float getBaseStroke() {
 		return this.baseStroke;
 	}
 
@@ -1402,7 +1402,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @return The stroke (never <code>null</code>).
 	 */
-	public float getItemOutlineStroke(int row, int column) {
+	public Float getItemOutlineStroke(int row, int column) {
 		return lookupSeriesOutlineStroke(row);
 	}
 
@@ -1416,7 +1416,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @since 1.0.6
 	 */
-	public float lookupSeriesOutlineStroke(int series) {
+	public Float lookupSeriesOutlineStroke(int series) {
 
 		// otherwise look up the stroke table
 		float result = getSeriesOutlineStroke(series);
@@ -1442,7 +1442,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @see #setSeriesOutlineStroke(int, Stroke)
 	 */
-	public float getSeriesOutlineStroke(int series) {
+	public Float getSeriesOutlineStroke(int series) {
 		return this.outlineStrokeList.getStroke(series) == null ? 1
 				: this.outlineStrokeList.getStroke(series);
 	}
@@ -1487,7 +1487,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 	 * 
 	 * @see #setBaseOutlineStroke(Stroke)
 	 */
-	public float getBaseOutlineStroke() {
+	public Float getBaseOutlineStroke() {
 		return this.baseOutlineStroke;
 	}
 

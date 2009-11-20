@@ -80,7 +80,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable,
 
 	public static final Paint ltGray = new Paint(Paint.ANTI_ALIAS_FLAG);
 	static {
-		white.setColor(Color.LTGRAY);
+		ltGray.setColor(Color.LTGRAY);
 	}
 
 	/** The default outline paint sequence. */
@@ -90,7 +90,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable,
 	public static final Paint[] DEFAULT_FILL_PAINT_SEQUENCE = new Paint[] { white };
 
 	/** The default stroke sequence. */
-	public static final float[] DEFAULT_STROKE_SEQUENCE = new float[] { 10.f };
+	public static final float[] DEFAULT_STROKE_SEQUENCE = new float[] { 5.f };
 
 	/** The default outline stroke sequence. */
 	public static final float[] DEFAULT_OUTLINE_STROKE_SEQUENCE = new float[] { 1.0f };

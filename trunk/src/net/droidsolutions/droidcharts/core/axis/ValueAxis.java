@@ -653,7 +653,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, Serializable 
 			result[1] = (float) (cursor - insets.getBottom() - 2.0);
 		} else if (edge == RectangleEdge.BOTTOM) {
 			result[0] = (float) valueToJava2D(tick.getValue(), dataArea, edge);
-			result[1] = (float) (cursor + insets.getTop() + 2.0);
+			result[1] = (float) (cursor + insets.getTop() + 6.0);
 		} else if (edge == RectangleEdge.LEFT) {
 			result[0] = (float) (cursor - insets.getLeft() - 6.0);
 			result[1] = (float) valueToJava2D(tick.getValue(), dataArea, edge);

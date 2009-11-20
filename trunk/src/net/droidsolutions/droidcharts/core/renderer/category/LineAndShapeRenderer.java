@@ -96,8 +96,10 @@ package net.droidsolutions.droidcharts.core.renderer.category;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import net.droidsolutions.droidcharts.awt.Font;
 import net.droidsolutions.droidcharts.awt.Line2D;
+import net.droidsolutions.droidcharts.awt.PathIterator;
 import net.droidsolutions.droidcharts.awt.Rectangle2D;
 import net.droidsolutions.droidcharts.awt.Shape;
 import net.droidsolutions.droidcharts.common.BooleanList;
@@ -1048,9 +1050,10 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 					} else {
 						paint = getItemPaint(row, column);
 					}
-				paint.setStyle(Paint.Style.FILL);
-				Rectangle2D rec = shape.getBounds2D();
-				g2.drawRect((float)rec.getMinX(), (float)rec.getMinY(),(float) rec.getMaxX(), (float)rec.getMaxY(), paint);
+				paint.setStyle(Paint.Style.FILL_AND_STROKE);
+				Path path = convertAwtPathToAndroid(shape.getPathIterator(null));	
+				g2.drawPath(path, paint);
+				
 				}
 				if (this.drawOutlines) {
 					Paint paint ;
@@ -1061,8 +1064,8 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 					}
 					paint.setStyle(Paint.Style.STROKE);
 					paint.setStrokeWidth(getItemOutlineStroke(row, column));
-					Rectangle2D rec = shape.getBounds2D();
-					g2.drawRect((float)rec.getMinX(), (float)rec.getMinY(),(float) rec.getMaxX(), (float)rec.getMaxY(), paint);
+					Path path = convertAwtPathToAndroid(shape.getPathIterator(null));	
+					g2.drawPath(path, paint);
 				}
 			}
 
@@ -1248,6 +1251,44 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	public void setStroke(float stroke) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	private Path convertAwtPathToAndroid(PathIterator pi) {
+		Path path = new Path();
+		float[] coords = new float[6];
+		while (!pi.isDone()) {
+			int windingRule = pi.getWindingRule();
+
+			if (windingRule == PathIterator.WIND_EVEN_ODD) {
+				path.setFillType(Path.FillType.EVEN_ODD);
+			} else {
+				path.setFillType(Path.FillType.INVERSE_EVEN_ODD);
+			}
+
+			int pathType = pi.currentSegment(coords);
+
+			switch (pathType) {
+			case PathIterator.SEG_CLOSE:
+				path.close();
+				break;
+			case PathIterator.SEG_CUBICTO:
+				path.cubicTo(coords[0], coords[1], coords[2], coords[3],
+						coords[4], coords[5]);
+				break;
+			case PathIterator.SEG_LINETO:
+				path.lineTo(coords[0], coords[1]);
+				break;
+			case PathIterator.SEG_MOVETO:
+				path.moveTo(coords[0], coords[1]);
+				break;
+			case PathIterator.SEG_QUADTO:
+				path.quadTo(coords[0], coords[1], coords[2], coords[3]);
+				break;
+			}
+
+			pi.next();
+		}
+		return path;
 	}
 
 }

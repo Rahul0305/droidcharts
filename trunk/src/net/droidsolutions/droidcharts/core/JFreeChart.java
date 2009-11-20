@@ -182,6 +182,7 @@ import net.droidsolutions.droidcharts.core.event.TitleChangeListener;
 import net.droidsolutions.droidcharts.core.plot.CategoryPlot;
 import net.droidsolutions.droidcharts.core.plot.Plot;
 import net.droidsolutions.droidcharts.core.plot.PlotRenderingInfo;
+import net.droidsolutions.droidcharts.core.plot.XYPlot;
 import net.droidsolutions.droidcharts.core.title.LegendTitle;
 import net.droidsolutions.droidcharts.core.title.TextTitle;
 import net.droidsolutions.droidcharts.core.title.Title;
@@ -665,9 +666,10 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 	 * 
 	 * @see #getPlot()
 	 */
-	// public XYPlot getXYPlot() {
-	// return (XYPlot) this.plot;
-	// }
+	public XYPlot getXYPlot() {
+		return (XYPlot) this.plot;
+	}
+
 	/**
 	 * Returns a flag that indicates whether or not anti-aliasing is used when
 	 * the chart is drawn.
@@ -866,7 +868,7 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 						(float) borderArea.getMaxY(), borderPaint);
 			}
 		}
-		
+
 		// Rectangle2D plotArea = nonTitleArea;
 		Rectangle2D plotArea = chartArea;
 
@@ -876,7 +878,6 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 			plotInfo = info.getPlotInfo();
 		}
 		this.plot.draw(g2, plotArea, anchor, null, plotInfo);
-
 
 		// draw the title and subtitles...
 		Rectangle2D nonTitleArea = new Rectangle2D.Double();
@@ -904,7 +905,6 @@ public class JFreeChart implements Drawable, TitleChangeListener,
 			}
 		}
 
-	
 		g2.clipRect(savedClip);
 
 	}

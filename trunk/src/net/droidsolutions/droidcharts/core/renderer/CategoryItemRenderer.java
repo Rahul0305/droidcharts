@@ -763,7 +763,7 @@ public interface CategoryItemRenderer extends LegendItemSource {
 	 * 
 	 * @return The stroke (never <code>null</code>).
 	 */
-	public float getItemStroke(int row, int column);
+	public Float getItemStroke(int row, int column);
 
 	/**
 	 * Sets the stroke for ALL series and sends a {@link RendererChangeEvent} to
@@ -789,7 +789,7 @@ public interface CategoryItemRenderer extends LegendItemSource {
 	 * 
 	 * @see #setSeriesStroke(int, Stroke)
 	 */
-	public float getSeriesStroke(int series);
+	public Float getSeriesStroke(int series);
 
 	/**
 	 * Sets the stroke used for a series and sends a {@link RendererChangeEvent}
@@ -813,7 +813,7 @@ public interface CategoryItemRenderer extends LegendItemSource {
 	 * 
 	 * @see #setBaseStroke(Stroke)
 	 */
-	public float getBaseStroke();
+	public Float getBaseStroke();
 
 	/**
 	 * Sets the base stroke and sends a {@link RendererChangeEvent} to all
@@ -845,7 +845,7 @@ public interface CategoryItemRenderer extends LegendItemSource {
 	 * 
 	 * @return The stroke (never <code>null</code>).
 	 */
-	public float getItemOutlineStroke(int row, int column);
+	public Float getItemOutlineStroke(int row, int column);
 
 	/**
 	 * Sets the outline stroke for ALL series and sends a
@@ -871,7 +871,7 @@ public interface CategoryItemRenderer extends LegendItemSource {
 	 * 
 	 * @see #setSeriesOutlineStroke(int, Stroke)
 	 */
-	public float getSeriesOutlineStroke(int series);
+	public Float getSeriesOutlineStroke(int series);
 
 	/**
 	 * Sets the outline stroke used for a series and sends a
@@ -895,7 +895,7 @@ public interface CategoryItemRenderer extends LegendItemSource {
 	 * 
 	 * @see #setBaseOutlineStroke(Stroke)
 	 */
-	public float getBaseOutlineStroke();
+	public Float getBaseOutlineStroke();
 
 	/**
 	 * Sets the base outline stroke and sends a {@link RendererChangeEvent} to

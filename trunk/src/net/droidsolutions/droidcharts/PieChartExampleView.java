@@ -6,7 +6,6 @@ import net.droidsolutions.droidcharts.awt.Font;
 import net.droidsolutions.droidcharts.awt.Rectangle2D;
 import net.droidsolutions.droidcharts.core.ChartFactory;
 import net.droidsolutions.droidcharts.core.JFreeChart;
-import net.droidsolutions.droidcharts.core.data.CategoryDataset;
 import net.droidsolutions.droidcharts.core.data.DefaultPieDataset;
 import net.droidsolutions.droidcharts.core.data.PieDataset;
 import net.droidsolutions.droidcharts.core.plot.PiePlot;
@@ -95,7 +94,7 @@ public class PieChartExampleView extends View {
 				true, false);
 
 		PiePlot plot = (PiePlot) chart.getPlot();
-
+		//Initialize Pints for a plot and labels background.
 		Paint white = new Paint(Paint.ANTI_ALIAS_FLAG);
 		white.setColor(Color.WHITE);
 
@@ -106,22 +105,15 @@ public class PieChartExampleView extends View {
 		lightGray.setColor(Color.LTGRAY);
 		lightGray.setStrokeWidth(10);
 
-		Paint black = new Paint(Paint.ANTI_ALIAS_FLAG);
-		black.setColor(Color.BLACK);
-
-		Paint borderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		borderPaint.setColor(Color.WHITE);
-		borderPaint.setStrokeWidth(5);
-		// chart.setBorderPaint(borderPaint);
-		chart.setBackgroundPaint(dkGray);
-
-		plot.setLabelFont(new Font("SansSerif", Typeface.BOLD, 12));
-		plot.setNoDataMessage("No data available");
-		plot.setCircular(false);
-		plot.setLabelGap(0.02);
 		plot.setLabelBackgroundPaint(lightGray);
 		plot.setBackgroundPaint(dkGray);
+		chart.setBackgroundPaint(dkGray);
+
+		/* Set labels font*/
+		plot.setLabelFont(new Font("SansSerif", Typeface.BOLD, 12));
+
 		
+		//Customize pie sections with a custom colors.
 		Resources res = getResources();
 		int[] colors = new int[] {
 				res.getColor(R.color.color0),

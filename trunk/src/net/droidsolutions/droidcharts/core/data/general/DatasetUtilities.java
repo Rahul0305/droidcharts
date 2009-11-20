@@ -128,6 +128,7 @@ import net.droidsolutions.droidcharts.core.data.BoxAndWhiskerCategoryDataset;
 import net.droidsolutions.droidcharts.core.data.CategoryDataset;
 import net.droidsolutions.droidcharts.core.data.CategoryRangeInfo;
 import net.droidsolutions.droidcharts.core.data.DefaultCategoryDataset;
+import net.droidsolutions.droidcharts.core.data.DomainInfo;
 import net.droidsolutions.droidcharts.core.data.IntervalCategoryDataset;
 import net.droidsolutions.droidcharts.core.data.IntervalXYDataset;
 import net.droidsolutions.droidcharts.core.data.OHLCDataset;
@@ -136,6 +137,8 @@ import net.droidsolutions.droidcharts.core.data.Range;
 import net.droidsolutions.droidcharts.core.data.RangeInfo;
 import net.droidsolutions.droidcharts.core.data.StatisticalCategoryDataset;
 import net.droidsolutions.droidcharts.core.data.XYDataset;
+import net.droidsolutions.droidcharts.core.data.xy.XYDomainInfo;
+import net.droidsolutions.droidcharts.core.data.xy.XYRangeInfo;
 
 /**
  * A collection of useful static methods relating to datasets.
@@ -528,102 +531,545 @@ public final class DatasetUtilities {
 			return new Range(minimum, maximum);
 		}
 	}
-	
-	 /**
-     * Creates a {@link CategoryDataset} that contains a copy of the data in an
-     * array (instances of <code>Double</code> are created to represent the
-     * data items).
-     * <p>
-     * Row and column keys are created by appending 0, 1, 2, ... to the
-     * supplied prefixes.
-     *
-     * @param rowKeyPrefix  the row key prefix.
-     * @param columnKeyPrefix  the column key prefix.
-     * @param data  the data.
-     *
-     * @return The dataset.
-     */
-    public static CategoryDataset createCategoryDataset(String rowKeyPrefix,
-            String columnKeyPrefix, double[][] data) {
 
-        DefaultCategoryDataset result = new DefaultCategoryDataset();
-        for (int r = 0; r < data.length; r++) {
-            String rowKey = rowKeyPrefix + (r + 1);
-            for (int c = 0; c < data[r].length; c++) {
-                String columnKey = columnKeyPrefix + (c + 1);
-                result.addValue(new Double(data[r][c]), rowKey, columnKey);
-            }
-        }
-        return result;
+	/**
+	 * Creates a {@link CategoryDataset} that contains a copy of the data in an
+	 * array (instances of <code>Double</code> are created to represent the data
+	 * items).
+	 * <p>
+	 * Row and column keys are created by appending 0, 1, 2, ... to the supplied
+	 * prefixes.
+	 * 
+	 * @param rowKeyPrefix
+	 *            the row key prefix.
+	 * @param columnKeyPrefix
+	 *            the column key prefix.
+	 * @param data
+	 *            the data.
+	 * 
+	 * @return The dataset.
+	 */
+	public static CategoryDataset createCategoryDataset(String rowKeyPrefix,
+			String columnKeyPrefix, double[][] data) {
 
-    }
-    
-    /**
-     * Calculates the total of all the values in a {@link PieDataset}.  If
-     * the dataset contains negative or <code>null</code> values, they are
-     * ignored.
-     *
-     * @param dataset  the dataset (<code>null</code> not permitted).
-     *
-     * @return The total.
-     */
-    public static double calculatePieDatasetTotal(PieDataset dataset) {
-        if (dataset == null) {
-            throw new IllegalArgumentException("Null 'dataset' argument.");
-        }
-        List keys = dataset.getKeys();
-        double totalValue = 0;
-        Iterator iterator = keys.iterator();
-        while (iterator.hasNext()) {
-            Comparable current = (Comparable) iterator.next();
-            if (current != null) {
-                Number value = dataset.getValue(current);
-                double v = 0.0;
-                if (value != null) {
-                    v = value.doubleValue();
-                }
-                if (v > 0) {
-                    totalValue = totalValue + v;
-                }
-            }
-        }
-        return totalValue;
-    }
+		DefaultCategoryDataset result = new DefaultCategoryDataset();
+		for (int r = 0; r < data.length; r++) {
+			String rowKey = rowKeyPrefix + (r + 1);
+			for (int c = 0; c < data[r].length; c++) {
+				String columnKey = columnKeyPrefix + (c + 1);
+				result.addValue(new Double(data[r][c]), rowKey, columnKey);
+			}
+		}
+		return result;
 
-    /**
-     * Returns <code>true</code> if the dataset is empty (or <code>null</code>),
-     * and <code>false</code> otherwise.
-     *
-     * @param dataset  the dataset (<code>null</code> permitted).
-     *
-     * @return A boolean.
-     */
-    public static boolean isEmptyOrNull(PieDataset dataset) {
+	}
 
-        if (dataset == null) {
-            return true;
-        }
+	/**
+	 * Calculates the total of all the values in a {@link PieDataset}. If the
+	 * dataset contains negative or <code>null</code> values, they are ignored.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * 
+	 * @return The total.
+	 */
+	public static double calculatePieDatasetTotal(PieDataset dataset) {
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+		List keys = dataset.getKeys();
+		double totalValue = 0;
+		Iterator iterator = keys.iterator();
+		while (iterator.hasNext()) {
+			Comparable current = (Comparable) iterator.next();
+			if (current != null) {
+				Number value = dataset.getValue(current);
+				double v = 0.0;
+				if (value != null) {
+					v = value.doubleValue();
+				}
+				if (v > 0) {
+					totalValue = totalValue + v;
+				}
+			}
+		}
+		return totalValue;
+	}
 
-        int itemCount = dataset.getItemCount();
-        if (itemCount == 0) {
-            return true;
-        }
+	/**
+	 * Returns <code>true</code> if the dataset is empty (or <code>null</code>),
+	 * and <code>false</code> otherwise.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> permitted).
+	 * 
+	 * @return A boolean.
+	 */
+	public static boolean isEmptyOrNull(PieDataset dataset) {
 
-        for (int item = 0; item < itemCount; item++) {
-            Number y = dataset.getValue(item);
-            if (y != null) {
-                double yy = y.doubleValue();
-                if (yy > 0.0) {
-                    return false;
-                }
-            }
-        }
+		if (dataset == null) {
+			return true;
+		}
 
-        return true;
+		int itemCount = dataset.getItemCount();
+		if (itemCount == 0) {
+			return true;
+		}
 
-    }
+		for (int item = 0; item < itemCount; item++) {
+			Number y = dataset.getValue(item);
+			if (y != null) {
+				double yy = y.doubleValue();
+				if (yy > 0.0) {
+					return false;
+				}
+			}
+		}
 
+		return true;
 
+	}
 
+	/**
+	 * Returns <code>true</code> if the dataset is empty (or <code>null</code>),
+	 * and <code>false</code> otherwise.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> permitted).
+	 * 
+	 * @return A boolean.
+	 */
+	public static boolean isEmptyOrNull(XYDataset dataset) {
+		if (dataset != null) {
+			for (int s = 0; s < dataset.getSeriesCount(); s++) {
+				if (dataset.getItemCount(s) > 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Returns the range of values in the domain (x-values) of a dataset.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * 
+	 * @return The range of values (possibly <code>null</code>).
+	 */
+	public static Range findDomainBounds(XYDataset dataset) {
+		return findDomainBounds(dataset, true);
+	}
+
+	/**
+	 * Returns the range of values in the domain (x-values) of a dataset.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * @param includeInterval
+	 *            determines whether or not the x-interval is taken into account
+	 *            (only applies if the dataset is an {@link IntervalXYDataset}).
+	 * 
+	 * @return The range of values (possibly <code>null</code>).
+	 */
+	public static Range findDomainBounds(XYDataset dataset,
+			boolean includeInterval) {
+
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+
+		Range result = null;
+		// if the dataset implements DomainInfo, life is easier
+		if (dataset instanceof DomainInfo) {
+			DomainInfo info = (DomainInfo) dataset;
+			result = info.getDomainBounds(includeInterval);
+		} else {
+			result = iterateDomainBounds(dataset, includeInterval);
+		}
+		return result;
+
+	}
+
+	/**
+	 * Returns the bounds of the x-values in the specified <code>dataset</code>
+	 * taking into account only the visible series and including any x-interval
+	 * if requested.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * @param visibleSeriesKeys
+	 *            the visible series keys (<code>null</code> not permitted).
+	 * @param includeInterval
+	 *            include the x-interval (if any)?
+	 * 
+	 * @return The bounds (or <code>null</code> if the dataset contains no
+	 *         values.
+	 * 
+	 * @since 1.0.13
+	 */
+	public static Range findDomainBounds(XYDataset dataset,
+			List visibleSeriesKeys, boolean includeInterval) {
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+		Range result = null;
+		if (dataset instanceof XYDomainInfo) {
+			XYDomainInfo info = (XYDomainInfo) dataset;
+			result = info.getDomainBounds(visibleSeriesKeys, includeInterval);
+		} else {
+			result = iterateToFindDomainBounds(dataset, visibleSeriesKeys,
+					includeInterval);
+		}
+		return result;
+	}
+
+	/**
+	 * Iterates over the items in an {@link XYDataset} to find the range of
+	 * x-values. If the dataset is an instance of {@link IntervalXYDataset}, the
+	 * starting and ending x-values will be used for the bounds calculation.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * 
+	 * @return The range (possibly <code>null</code>).
+	 */
+	public static Range iterateDomainBounds(XYDataset dataset) {
+		return iterateDomainBounds(dataset, true);
+	}
+
+	/**
+	 * Iterates over the items in an {@link XYDataset} to find the range of
+	 * x-values.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * @param includeInterval
+	 *            a flag that determines, for an {@link IntervalXYDataset},
+	 *            whether the x-interval or just the x-value is used to
+	 *            determine the overall range.
+	 * 
+	 * @return The range (possibly <code>null</code>).
+	 */
+	public static Range iterateDomainBounds(XYDataset dataset,
+			boolean includeInterval) {
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+		double minimum = Double.POSITIVE_INFINITY;
+		double maximum = Double.NEGATIVE_INFINITY;
+		int seriesCount = dataset.getSeriesCount();
+		double lvalue;
+		double uvalue;
+		if (includeInterval && dataset instanceof IntervalXYDataset) {
+			IntervalXYDataset intervalXYData = (IntervalXYDataset) dataset;
+			for (int series = 0; series < seriesCount; series++) {
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					lvalue = intervalXYData.getStartXValue(series, item);
+					uvalue = intervalXYData.getEndXValue(series, item);
+					if (!Double.isNaN(lvalue)) {
+						minimum = Math.min(minimum, lvalue);
+					}
+					if (!Double.isNaN(uvalue)) {
+						maximum = Math.max(maximum, uvalue);
+					}
+				}
+			}
+		} else {
+			for (int series = 0; series < seriesCount; series++) {
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					lvalue = dataset.getXValue(series, item);
+					uvalue = lvalue;
+					if (!Double.isNaN(lvalue)) {
+						minimum = Math.min(minimum, lvalue);
+						maximum = Math.max(maximum, uvalue);
+					}
+				}
+			}
+		}
+		if (minimum > maximum) {
+			return null;
+		} else {
+			return new Range(minimum, maximum);
+		}
+	}
+
+	/**
+	 * Returns the range of values in the range for the dataset. This method is
+	 * the partner for the {@link #findDomainBounds(XYDataset)} method.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * 
+	 * @return The range (possibly <code>null</code>).
+	 */
+	public static Range findRangeBounds(XYDataset dataset) {
+		return findRangeBounds(dataset, true);
+	}
+
+	/**
+	 * Finds the bounds of the y-values in the specified dataset, including only
+	 * those series that are listed in visibleSeriesKeys, and those items whose
+	 * x-values fall within the specified range.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * @param visibleSeriesKeys
+	 *            the keys for the visible series (<code>null</code> not
+	 *            permitted).
+	 * @param xRange
+	 *            the x-range (<code>null</code> not permitted).
+	 * @param includeInterval
+	 *            include the y-interval (if the dataset has a y-interval).
+	 * 
+	 * @return The data bounds.
+	 * 
+	 * @since 1.0.13
+	 */
+	public static Range findRangeBounds(XYDataset dataset,
+			List visibleSeriesKeys, Range xRange, boolean includeInterval) {
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+		Range result = null;
+		if (dataset instanceof XYRangeInfo) {
+			XYRangeInfo info = (XYRangeInfo) dataset;
+			result = info.getRangeBounds(visibleSeriesKeys, xRange,
+					includeInterval);
+		} else {
+			result = iterateToFindRangeBounds(dataset, visibleSeriesKeys,
+					xRange, includeInterval);
+		}
+		return result;
+	}
+
+	/**
+	 * Iterates over the data item of the xy dataset to find the range bounds.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * 
+	 * @return The range (possibly <code>null</code>).
+	 * 
+	 * @deprecated As of 1.0.10, use {@link #iterateRangeBounds(XYDataset)}.
+	 */
+	public static Range iterateXYRangeBounds(XYDataset dataset) {
+		return iterateRangeBounds(dataset);
+	}
+
+	/**
+	 * Iterates over the data item of the xy dataset to find the range bounds.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * 
+	 * @return The range (possibly <code>null</code>).
+	 * 
+	 * @since 1.0.10
+	 */
+	public static Range iterateRangeBounds(XYDataset dataset) {
+		return iterateRangeBounds(dataset, true);
+	}
+
+	/**
+	 * Returns the range of y-values in the specified dataset for the data items
+	 * belonging to the visible series and with x-values in the given range.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * @param visibleSeriesKeys
+	 *            the visible series keys (<code>null</code> not permitted).
+	 * @param xRange
+	 *            the x-range (<code>null</code> not permitted).
+	 * @param includeInterval
+	 *            a flag that determines whether or not the y-interval for the
+	 *            dataset is included (this only applies if the dataset is an
+	 *            instance of IntervalXYDataset).
+	 * 
+	 * @return The y-range (possibly <code>null</code>).
+	 * 
+	 * @since 1.0.13
+	 */
+	public static Range iterateToFindRangeBounds(XYDataset dataset,
+			List visibleSeriesKeys, Range xRange, boolean includeInterval) {
+
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+		if (visibleSeriesKeys == null) {
+			throw new IllegalArgumentException(
+					"Null 'visibleSeriesKeys' argument.");
+		}
+		if (xRange == null) {
+			throw new IllegalArgumentException("Null 'xRange' argument");
+		}
+
+		double minimum = Double.POSITIVE_INFINITY;
+		double maximum = Double.NEGATIVE_INFINITY;
+
+		// handle three cases by dataset type
+		if (includeInterval && dataset instanceof OHLCDataset) {
+			// handle special case of OHLCDataset
+			OHLCDataset ohlc = (OHLCDataset) dataset;
+			Iterator iterator = visibleSeriesKeys.iterator();
+			while (iterator.hasNext()) {
+				Comparable seriesKey = (Comparable) iterator.next();
+				int series = dataset.indexOf(seriesKey);
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					double x = ohlc.getXValue(series, item);
+					if (xRange.contains(x)) {
+						double lvalue = ohlc.getLowValue(series, item);
+						double uvalue = ohlc.getHighValue(series, item);
+						if (!Double.isNaN(lvalue)) {
+							minimum = Math.min(minimum, lvalue);
+						}
+						if (!Double.isNaN(uvalue)) {
+							maximum = Math.max(maximum, uvalue);
+						}
+					}
+				}
+			}
+		}
+		/*
+		 * else if (includeInterval && dataset instanceof
+		 * BoxAndWhiskerXYDataset) { // handle special case of
+		 * BoxAndWhiskerXYDataset BoxAndWhiskerXYDataset bx =
+		 * (BoxAndWhiskerXYDataset) dataset; Iterator iterator =
+		 * visibleSeriesKeys.iterator(); while (iterator.hasNext()) { Comparable
+		 * seriesKey = (Comparable) iterator.next(); int series =
+		 * dataset.indexOf(seriesKey); int itemCount =
+		 * dataset.getItemCount(series); for (int item = 0; item < itemCount;
+		 * item++) { double x = bx.getXValue(series, item); if
+		 * (xRange.contains(x)) { Number lvalue = bx.getMinRegularValue(series,
+		 * item); Number uvalue = bx.getMaxRegularValue(series, item); if
+		 * (lvalue != null) { minimum = Math.min(minimum, lvalue.doubleValue());
+		 * } if (uvalue != null) { maximum = Math.max(maximum,
+		 * uvalue.doubleValue()); } } } } }
+		 */
+		else if (includeInterval && dataset instanceof IntervalXYDataset) {
+			// handle special case of IntervalXYDataset
+			IntervalXYDataset ixyd = (IntervalXYDataset) dataset;
+			Iterator iterator = visibleSeriesKeys.iterator();
+			while (iterator.hasNext()) {
+				Comparable seriesKey = (Comparable) iterator.next();
+				int series = dataset.indexOf(seriesKey);
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					double x = ixyd.getXValue(series, item);
+					if (xRange.contains(x)) {
+						double lvalue = ixyd.getStartYValue(series, item);
+						double uvalue = ixyd.getEndYValue(series, item);
+						if (!Double.isNaN(lvalue)) {
+							minimum = Math.min(minimum, lvalue);
+						}
+						if (!Double.isNaN(uvalue)) {
+							maximum = Math.max(maximum, uvalue);
+						}
+					}
+				}
+			}
+		} else {
+			// standard case - plain XYDataset
+			Iterator iterator = visibleSeriesKeys.iterator();
+			while (iterator.hasNext()) {
+				Comparable seriesKey = (Comparable) iterator.next();
+				int series = dataset.indexOf(seriesKey);
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					double x = dataset.getXValue(series, item);
+					double y = dataset.getYValue(series, item);
+					if (xRange.contains(x)) {
+						if (!Double.isNaN(y)) {
+							minimum = Math.min(minimum, y);
+							maximum = Math.max(maximum, y);
+						}
+					}
+				}
+			}
+		}
+		if (minimum == Double.POSITIVE_INFINITY) {
+			return null;
+		} else {
+			return new Range(minimum, maximum);
+		}
+	}
+
+	/**
+	 * Returns the range of x-values in the specified dataset for the data items
+	 * belonging to the visible series.
+	 * 
+	 * @param dataset
+	 *            the dataset (<code>null</code> not permitted).
+	 * @param visibleSeriesKeys
+	 *            the visible series keys (<code>null</code> not permitted).
+	 * @param includeInterval
+	 *            a flag that determines whether or not the y-interval for the
+	 *            dataset is included (this only applies if the dataset is an
+	 *            instance of IntervalXYDataset).
+	 * 
+	 * @return The x-range (possibly <code>null</code>).
+	 * 
+	 * @since 1.0.13
+	 */
+	public static Range iterateToFindDomainBounds(XYDataset dataset,
+			List visibleSeriesKeys, boolean includeInterval) {
+
+		if (dataset == null) {
+			throw new IllegalArgumentException("Null 'dataset' argument.");
+		}
+		if (visibleSeriesKeys == null) {
+			throw new IllegalArgumentException(
+					"Null 'visibleSeriesKeys' argument.");
+		}
+
+		double minimum = Double.POSITIVE_INFINITY;
+		double maximum = Double.NEGATIVE_INFINITY;
+
+		if (includeInterval && dataset instanceof IntervalXYDataset) {
+			// handle special case of IntervalXYDataset
+			IntervalXYDataset ixyd = (IntervalXYDataset) dataset;
+			Iterator iterator = visibleSeriesKeys.iterator();
+			while (iterator.hasNext()) {
+				Comparable seriesKey = (Comparable) iterator.next();
+				int series = dataset.indexOf(seriesKey);
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					double lvalue = ixyd.getStartXValue(series, item);
+					double uvalue = ixyd.getEndXValue(series, item);
+					if (!Double.isNaN(lvalue)) {
+						minimum = Math.min(minimum, lvalue);
+					}
+					if (!Double.isNaN(uvalue)) {
+						maximum = Math.max(maximum, uvalue);
+					}
+				}
+			}
+		} else {
+			// standard case - plain XYDataset
+			Iterator iterator = visibleSeriesKeys.iterator();
+			while (iterator.hasNext()) {
+				Comparable seriesKey = (Comparable) iterator.next();
+				int series = dataset.indexOf(seriesKey);
+				int itemCount = dataset.getItemCount(series);
+				for (int item = 0; item < itemCount; item++) {
+					double x = dataset.getXValue(series, item);
+					if (!Double.isNaN(x)) {
+						minimum = Math.min(minimum, x);
+						maximum = Math.max(maximum, x);
+					}
+				}
+			}
+		}
+
+		if (minimum == Double.POSITIVE_INFINITY) {
+			return null;
+		} else {
+			return new Range(minimum, maximum);
+		}
+	}
 
 }

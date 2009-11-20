@@ -162,9 +162,7 @@ public class LineChartExampleView extends View {
 		chart.setBackgroundPaint(white);
 
 		// set the stroke for each series...
-		plot.getRenderer().setSeriesStroke(0, 1f);
-		plot.getRenderer().setSeriesStroke(1, 2f);
-		plot.getRenderer().setSeriesStroke(2, 3f);
+
 
 		Paint blue = new Paint(Paint.ANTI_ALIAS_FLAG);
 		blue.setColor(Color.rgb(125, 138, 46));
@@ -199,7 +197,6 @@ public class LineChartExampleView extends View {
 		rangeAxis.setLabelAngle(90);
 
 		final CategoryAxis domainAxis = plot.getDomainAxis();
-		// domainAxis.set
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.STANDARD);
 		return chart;
 
