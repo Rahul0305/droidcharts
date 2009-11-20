@@ -56,83 +56,83 @@ import android.graphics.Paint;
 public class ChartColor extends Color {
 
 	/** A very dark red color. */
-	public static final int VERY_DARK_RED = Color.argb(0x00, 0x80, 0x00, 0x00);
+	public static final int VERY_DARK_RED = Color.argb(0x90, 0x80, 0x00, 0x00);
 
 	/** A dark red color. */
-	public static final int DARK_RED = Color.argb(0x00, 0xc0, 0x00, 0x00);
+	public static final int DARK_RED = Color.argb(0x90, 0xc0, 0x00, 0x00);
 
 	/** A light red color. */
-	public static final int LIGHT_RED = Color.argb(0x00, 0xFF, 0x40, 0x40);
+	public static final int LIGHT_RED = Color.argb(0x90, 0xFF, 0x40, 0x40);
 
 	/** A very light red color. */
-	public static final int VERY_LIGHT_RED = Color.argb(0x00, 0xFF, 0x80, 0x80);
+	public static final int VERY_LIGHT_RED = Color.argb(0x90, 0xFF, 0x80, 0x80);
 
 	/** A very dark yellow color. */
-	public static final int VERY_DARK_YELLOW = Color.argb(0x00, 0x80, 0x80,
+	public static final int VERY_DARK_YELLOW = Color.argb(0x90, 0x80, 0x80,
 			0x00);
 
 	/** A dark yellow color. */
-	public static final int DARK_YELLOW = Color.argb(0x00, 0xC0, 0xC0, 0x00);
+	public static final int DARK_YELLOW = Color.argb(0x90, 0xC0, 0xC0, 0x00);
 
 	/** A light yellow color. */
-	public static final int LIGHT_YELLOW = Color.argb(0x00, 0xFF, 0xFF, 0x40);
+	public static final int LIGHT_YELLOW = Color.argb(0x90, 0xFF, 0xFF, 0x40);
 
 	/** A very light yellow color. */
-	public static final int VERY_LIGHT_YELLOW = Color.argb(0x00, 0xFF, 0xFF,
+	public static final int VERY_LIGHT_YELLOW = Color.argb(0x90, 0xFF, 0xFF,
 			0x80);
 
 	/** A very dark green color. */
 	public static final int VERY_DARK_GREEN = Color
-			.argb(0x00, 0x00, 0x80, 0x00);
+			.argb(0x90, 0x00, 0x80, 0x00);
 
 	/** A dark green color. */
-	public static final int DARK_GREEN = Color.argb(0x00, 0x00, 0xC0, 0x00);
+	public static final int DARK_GREEN = Color.argb(0x90, 0x00, 0xC0, 0x00);
 
 	/** A light green color. */
-	public static final int LIGHT_GREEN = Color.argb(0x00, 0x40, 0xFF, 0x40);
+	public static final int LIGHT_GREEN = Color.argb(0x90, 0x40, 0xFF, 0x40);
 
 	/** A very light green color. */
-	public static final int VERY_LIGHT_GREEN = Color.argb(0x00, 0x80, 0xFF,
+	public static final int VERY_LIGHT_GREEN = Color.argb(0x90, 0x80, 0xFF,
 			0x80);
 
 	/** A very dark cyan color. */
-	public static final int VERY_DARK_CYAN = Color.argb(0x00, 0x00, 0x80, 0x80);
+	public static final int VERY_DARK_CYAN = Color.argb(0x90, 0x00, 0x80, 0x80);
 
 	/** A dark cyan color. */
-	public static final int DARK_CYAN = Color.argb(0x00, 0x00, 0xC0, 0xC0);
+	public static final int DARK_CYAN = Color.argb(0x90, 0x00, 0xC0, 0xC0);
 
 	/** A light cyan color. */
-	public static final int LIGHT_CYAN = Color.argb(0x00, 0x40, 0xFF, 0xFF);
+	public static final int LIGHT_CYAN = Color.argb(0x90, 0x40, 0xFF, 0xFF);
 
 	/** Aa very light cyan color. */
 	public static final int VERY_LIGHT_CYAN = Color
-			.argb(0x00, 0x80, 0xFF, 0xFF);
+			.argb(0x90, 0x80, 0xFF, 0xFF);
 
 	/** A very dark blue color. */
-	public static final int VERY_DARK_BLUE = Color.argb(0x00, 0x00, 0x00, 0x80);
+	public static final int VERY_DARK_BLUE = Color.argb(0x90, 0x00, 0x00, 0x80);
 
 	/** A dark blue color. */
-	public static final int DARK_BLUE = Color.argb(0x00, 0x00, 0x00, 0xC0);
+	public static final int DARK_BLUE = Color.argb(0x90, 0x00, 0x00, 0xC0);
 
 	/** A light blue color. */
-	public static final int LIGHT_BLUE = Color.argb(0x00, 0x40, 0x40, 0xFF);
+	public static final int LIGHT_BLUE = Color.argb(0x90, 0x40, 0x40, 0xFF);
 
 	/** A very light blue color. */
 	public static final int VERY_LIGHT_BLUE = Color
-			.argb(0x00, 0x80, 0x80, 0xFF);
+			.argb(0x90, 0x80, 0x80, 0xFF);
 
 	/** A very dark magenta/purple color. */
-	public static final int VERY_DARK_MAGENTA = Color.argb(0x00, 0x80, 0x00,
+	public static final int VERY_DARK_MAGENTA = Color.argb(0x90, 0x80, 0x00,
 			0x80);
 
 	/** A dark magenta color. */
-	public static final int DARK_MAGENTA = Color.argb(0x00, 0xC0, 0x00, 0xC0);
+	public static final int DARK_MAGENTA = Color.argb(0x90, 0xC0, 0x00, 0xC0);
 
 	/** A light magenta color. */
-	public static final int LIGHT_MAGENTA = Color.argb(0x00, 0xFF, 0x40, 0xFF);
+	public static final int LIGHT_MAGENTA = Color.argb(0x90, 0xFF, 0x40, 0xFF);
 
 	/** A very light magenta color. */
-	public static final int VERY_LIGHT_MAGENTA = Color.argb(0x00, 0xFF, 0x80,
+	public static final int VERY_LIGHT_MAGENTA = Color.argb(0x90, 0xFF, 0x80,
 			0xFF);
 
 	/**
@@ -146,12 +146,12 @@ public class ChartColor extends Color {
 
 		return new Paint[] {
 
-		createPaint(Color.argb(0x00, 0xFF, 0x55, 0x55)),
-				createPaint(Color.argb(0x00, 0x55, 0x55, 0xFF)),
-				createPaint(Color.argb(0x00, 0x55, 0xFF, 0x55)),
-				createPaint(Color.argb(0x00, 0xFF, 0xFF, 0x55)),
-				createPaint(Color.argb(0x00, 0xFF, 0x55, 0xFF)),
-				createPaint(Color.argb(0x00, 0x55, 0xFF, 0xFF)),
+		createPaint(Color.argb(0x90, 0xFF, 0x55, 0x55)),
+				createPaint(Color.argb(0x90, 0x55, 0x55, 0xFF)),
+				createPaint(Color.argb(0x90, 0x55, 0xFF, 0x55)),
+				createPaint(Color.argb(0x90, 0xFF, 0xFF, 0x55)),
+				createPaint(Color.argb(0x90, 0xFF, 0x55, 0xFF)),
+				createPaint(Color.argb(0x90, 0x55, 0xFF, 0xFF)),
 
 				createPaint(ChartColor.DARK_RED),
 				createPaint(ChartColor.DARK_BLUE),

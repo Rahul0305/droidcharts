@@ -560,7 +560,7 @@ public abstract class Plot implements LegendItemSource, Cloneable, Serializable 
 	 * 
 	 * @see #setBackgroundAlpha(float)
 	 */
-	public float getBackgroundAlpha() {
+	public int getBackgroundAlpha() {
 		return this.backgroundAlpha;
 	}
 

@@ -131,14 +131,18 @@ import net.droidsolutions.droidcharts.core.axis.NumberAxis;
 import net.droidsolutions.droidcharts.core.axis.ValueAxis;
 import net.droidsolutions.droidcharts.core.data.CategoryDataset;
 import net.droidsolutions.droidcharts.core.data.PieDataset;
+import net.droidsolutions.droidcharts.core.data.XYDataset;
 import net.droidsolutions.droidcharts.core.label.ItemLabelAnchor;
 import net.droidsolutions.droidcharts.core.label.ItemLabelPosition;
 import net.droidsolutions.droidcharts.core.label.StandardPieSectionLabelGenerator;
 import net.droidsolutions.droidcharts.core.plot.CategoryPlot;
 import net.droidsolutions.droidcharts.core.plot.PiePlot;
 import net.droidsolutions.droidcharts.core.plot.PlotOrientation;
+import net.droidsolutions.droidcharts.core.plot.XYPlot;
 import net.droidsolutions.droidcharts.core.renderer.BarRenderer;
 import net.droidsolutions.droidcharts.core.renderer.category.LineAndShapeRenderer;
+import net.droidsolutions.droidcharts.core.renderer.xy.XYItemRenderer;
+import net.droidsolutions.droidcharts.core.renderer.xy.XYLineAndShapeRenderer;
 
 /**
  * A collection of utility methods for creating some standard charts with
@@ -278,6 +282,48 @@ public abstract class ChartFactory {
         CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis,
                 renderer);
         plot.setOrientation(orientation);
+        JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
+                plot, legend);
+        return chart;
+
+    }
+    
+    /**
+     * Creates a line chart (based on an {@link XYDataset}) with default
+     * settings.
+     *
+     * @param title  the chart title (<code>null</code> permitted).
+     * @param xAxisLabel  a label for the X-axis (<code>null</code> permitted).
+     * @param yAxisLabel  a label for the Y-axis (<code>null</code> permitted).
+     * @param dataset  the dataset for the chart (<code>null</code> permitted).
+     * @param orientation  the plot orientation (horizontal or vertical)
+     *                     (<code>null</code> NOT permitted).
+     * @param legend  a flag specifying whether or not a legend is required.
+     * @param tooltips  configure chart to generate tool tips?
+     * @param urls  configure chart to generate URLs?
+     *
+     * @return The chart.
+     */
+    public static JFreeChart createXYLineChart(String title,
+                                               String xAxisLabel,
+                                               String yAxisLabel,
+                                               XYDataset dataset,
+                                               PlotOrientation orientation,
+                                               boolean legend,
+                                               boolean tooltips,
+                                               boolean urls) {
+
+        if (orientation == null) {
+            throw new IllegalArgumentException("Null 'orientation' argument.");
+        }
+        NumberAxis xAxis = new NumberAxis(xAxisLabel);
+        xAxis.setAutoRangeIncludesZero(false);
+        NumberAxis yAxis = new NumberAxis(yAxisLabel);
+        XYItemRenderer renderer = new XYLineAndShapeRenderer(true, false);
+        XYPlot plot = new XYPlot(dataset, xAxis, yAxis, renderer);
+        plot.setOrientation(orientation);
+      
+
         JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT,
                 plot, legend);
         return chart;
